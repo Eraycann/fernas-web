@@ -146,6 +146,8 @@ npm run package
 
 `release/fernas-cpanel-*.zip` dosyasını `public_html` altına aç. Zip; `dist/`, `.htaccess`, `contact.php`, `application.php` ve 301 yönlendirmelerini içerir.
 
+Hazır paket: <https://github.com/Eraycann/fernas-web/releases/tag/v0.1.0>
+
 Ayrıntılar: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## AI / model devri
