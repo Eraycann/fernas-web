@@ -65,7 +65,7 @@ Kullanıcının son yönü:
 - `npm run build`: 268 sayfa; Pagefind 266 sayfa indeksliyor.
 - `npm run validate:content`: 0 hata, 10 uyarı.
 - Playwright + axe: 54 sayfa/genişlik kombinasyonu, 0 sorun.
-- Lighthouse henüz son hâl için çalıştırılmadı.
+- Vercel mobil Lighthouse: Perf 97, A11y 100, BP 100, SEO 69 (önizleme `noindex`). LCP 2,5 s; 2,0 s hedefi açık. CLS 0, TBT 30 ms.
 
 ### Son tasarım kararları
 
@@ -146,7 +146,7 @@ Node 22.23.4+ gerekir. Proje npm kullanır; pnpm/yarn karıştırılmaz.
 4. **Hukuki EN:** İngilizce politika/KVKK kaynak metni yok; EN sayfalar Türkçe PDF'lere gidiyor.
 5. **Form testi:** PHP lokalde yok. cPanel'de gerçek gönderim, ek dosya ve 301'ler test edilmeli.
 6. **cPanel paketi:** Son tasarımdan sonra yeniden üretilmeli.
-7. **Lighthouse:** Ana sayfa ve proje detayında LCP/CLS/INP ölçülmeli.
+7. **Lighthouse:** Vercel mobilde Perf 97 / A11y 100 / BP 100 / SEO 69 (noindex); LCP 2,5 s. 2,0 s hedefi için hero teslimi iyileştirilmeli.
 
 ### İçerik kalitesi
 
@@ -167,7 +167,7 @@ Node 22.23.4+ gerekir. Proje npm kullanır; pnpm/yarn karıştırılmaz.
 ## 8. Önerilen sıra
 
 1. GitHub ve Vercel önizlemesini doğrula; linkleri paylaş.
-2. Lighthouse (mobil + masaüstü) ölç; LCP ve CLS'yi düzelt.
+2. Lighthouse (mobil + masaüstü) ölç; LCP'yi 2,0 s altına indir (CLS zaten 0).
 3. Telefon/e-posta teyidini al; PHP endpoint'lerini güncelle.
 4. Eksik EN proje ve sayfaları tamamla; dil bağlantısını koşullu yap.
 5. Yüksek çözünürlüklü görselleri temin et; düşük çözünürlüklü olanları değiştir.

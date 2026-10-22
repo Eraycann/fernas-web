@@ -47,6 +47,8 @@
 
 **Çıkış:** Perf/A11y/BP/SEO ≥ 95; LCP < 2.0 s; CLS < 0.05.
 
+**Mevcut (Vercel mobil):** Perf 97, A11y 100, BP 100, SEO 69 (`noindex`), LCP 2,5 s, CLS 0. LCP hedefi henüz karşılanmadı.
+
 ## B. İçerik ve editoryal
 
 ### B1. Haber güncelliği
