@@ -1,7 +1,9 @@
 ---
 import * as cheerio from "cheerio";
 import Base from "../../layouts/Base.astro";
+import PhotoBand from "../../components/ui/PhotoBand.astro";
 import about from "../../content/pages/hakkimizda.json";
+import { loadProjects, type ProjectRecord } from "../../lib/projects";
 
 const $ = cheerio.load(about.body_html_en);
 const paragraphs = $("p")
@@ -14,6 +16,21 @@ const mission = paragraphs[8] ?? "";
 const vision = paragraphs[9] ?? "";
 const foundation = paragraphs[10] ?? "";
 const scholarship = paragraphs[11] ?? "";
+
+const bySlug = new Map(loadProjects().map((project) => [project.slug, project]));
+const pick = (slug: string): ProjectRecord => {
+  const project = bySlug.get(slug);
+  if (!project) throw new Error(`Project not found — ${slug}`);
+  return project;
+};
+
+const band = [
+  "sinop-ayancik-devlet-yolu",
+  "cape-bodrum-luxury-hotel-beach",
+  "sebenoba-ruzgar-enerji-santrali",
+].map(pick);
+
+const image800 = (src: string) => src.replace(/cover-1600\.webp$/, "cover-800.webp");
 ---
 
 <Base
@@ -74,6 +91,15 @@ const scholarship = paragraphs[11] ?? "";
       </div>
     </div>
   </section>
+
+  <PhotoBand
+    label="From the field"
+    items={band.map((project) => ({
+      src: image800(project.cover),
+      alt: `${project.titleEn || project.title} — Fernas`,
+      caption: [project.titleEn || project.title, project.year].filter(Boolean).join(" · "),
+    }))}
+  />
 
   <section class="section">
     <div class="shell grid gap-12 lg:grid-cols-12 lg:gap-16">

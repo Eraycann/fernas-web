@@ -1,0 +1,63 @@
+---
+interface Props {
+  src: string;
+  poster: string;
+  title: string;
+  caption?: string;
+  lang?: "tr" | "en";
+}
+
+const { src, poster, title, caption, lang = "tr" } = Astro.props;
+const playLabel = lang === "en" ? "Play video" : "Videoyu oynat";
+---
+
+<figure class="video-facade" data-video-facade>
+  <button
+    type="button"
+    class="video-facade__button"
+    data-video-src={src}
+    data-video-poster={poster}
+    aria-label={`${title} — ${playLabel}`}
+  >
+    <img src={poster} alt="" width="1600" height="900" loading="lazy" decoding="async" />
+    <span class="video-facade__play">
+      <svg viewBox="0 0 10 12" fill="currentColor" aria-hidden="true">
+        <path d="M0 0v12l10-6z" />
+      </svg>
+      {playLabel}
+    </span>
+  </button>
+  {caption && <span class="video-facade__caption">{caption}</span>}
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-video-facade]").forEach((facade) => {
+    const button = facade.querySelector<HTMLButtonElement>("[data-video-src]");
+    if (!button) return;
+
+    button.addEventListener(
+      "click",
+      () => {
+        const src = button.dataset.videoSrc;
+        const poster = button.dataset.videoPoster;
+        if (!src) return;
+
+        const video = document.createElement("video");
+        video.className = "video-facade__video";
+        video.src = src;
+        video.controls = true;
+        video.playsInline = true;
+        video.autoplay = true;
+        video.preload = "none";
+        if (poster) video.poster = poster;
+        video.setAttribute("width", "1600");
+        video.setAttribute("height", "900");
+
+        button.replaceWith(video);
+        video.focus({ preventScroll: true });
+        void video.play().catch(() => {});
+      },
+      { once: true },
+    );
+  });
+</script>

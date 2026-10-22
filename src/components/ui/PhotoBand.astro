@@ -1,0 +1,23 @@
+---
+interface Item {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+interface Props {
+  items: Item[];
+  label: string;
+}
+
+const { items, label } = Astro.props;
+---
+
+<section class="photo-band" aria-label={label}>
+  {items.map((item) => (
+    <figure>
+      <img src={item.src} alt={item.alt} width="800" height="600" loading="lazy" decoding="async" />
+      <figcaption>{item.caption}</figcaption>
+    </figure>
+  ))}
+</section>

@@ -1,0 +1,36 @@
+{
+  "hero": "sebenoba-ruzgar-enerji-santrali",
+  "heroMedia": {
+    "src": "/images/hero/sebenoba-1600.webp",
+    "srcset": "/images/hero/sebenoba-640.webp 640w, /images/hero/sebenoba-1080.webp 1080w, /images/hero/sebenoba-1600.webp 1600w"
+  },
+  "rail": [
+    "sirvan-baraji-ve-hidroelektrik-santrali",
+    "cape-bodrum-luxury-hotel-beach",
+    "erbil-icme-suyu-ve-dagitim-sebekesi",
+    "otluca-hidroelektrik-santrali",
+    "batman-bims-fabrikasi",
+    "sinop-ayancik-devlet-yolu",
+    "meyve-bahceleri",
+    "cag-cag-hidroelektrik-santrali"
+  ],
+  "feature": "sirvan-baraji-ve-hidroelektrik-santrali",
+  "featured": [
+    "cape-bodrum-luxury-hotel-beach",
+    "batman-bims-fabrikasi",
+    "erbil-icme-suyu-ve-dagitim-sebekesi"
+  ],
+  "introPhotos": [
+    "kahramanmaras-cazibe-2-kisim-sulmasi",
+    "aksaray-fren-sistemleri-fabrikasi"
+  ],
+  "sustainPhoto": "fernas-4-gunes-enerji-santrali",
+  "sectorMedia": {
+    "insaat": "sinop-ayancik-devlet-yolu",
+    "enerji": "sebenoba-ruzgar-enerji-santrali",
+    "dogalgaz-dagitim": "south-jetty-boru-hatti-projesi",
+    "sanayi": "batman-bims-fabrikasi",
+    "gida": "meyve-bahceleri",
+    "turizm": "cape-bodrum-luxury-hotel-beach"
+  }
+}

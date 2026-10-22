@@ -15,7 +15,7 @@ Kök: C:\Users\Erayc\fernas-web
 6. docs/CONTENT-MODEL.md
 7. docs/DESIGN-SYSTEM.md
 
-Stack: Astro 7 (static) + React 19 adaları + Tailwind 4 + Lenis/GSAP + Pagefind.
+Stack: Astro 7 (static) + React 19 adaları + Tailwind 4 + Lenis + Pagefind.
 Üretim: cPanel public_html. Vercel yalnızca önizleme. Node sunucu, veritabanı, CMS, Next.js, Sanity yok.
 Formlar: yalnızca küçük PHP endpoint'leri.
 

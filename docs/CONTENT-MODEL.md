@@ -17,6 +17,7 @@ Bu proje CMS kullanmaz. İçerik, build sırasında JSON dosyalarından okunur v
 | Üyelik | `src/data/memberships.json` | 16 |
 | Zaman çizgisi | `src/data/timeline.json` | 4 |
 | Site bilgileri | `src/data/site.json` | 1 |
+| Ana sayfa seçkisi | `src/data/home.json` | 1 |
 | Bilgi toplumu | `src/data/bilgi-toplumu.json` | 1 |
 
 `src/content/pages` bir route tanımı değildir; WordPress'ten alınan sayfa gövdelerinin arşividir. Yayınlanan kurumsal sayfalar `src/pages/grup/*.astro` içinde elle kurulur. `test`, `insaat-2`, `devam-eden-projeler-2`, `tamamlanan-projeler-2` yayına alınmaz.
@@ -44,6 +45,8 @@ Dosya adı genelde slug ile aynıdır. Zorunlu alanlar: `slug`, `title_tr`, `sec
   "body_html_en": "<p>Road construction works.</p>",
   "cover": "/images/projects/sinop-ayancik-devlet-yolu/cover-1600.webp",
   "gallery": [],
+  "video": "",
+  "video_poster": "",
   "alt_tr": "Sinop Ayancık Devlet Yolu — inşaat",
   "alt_en": "Sinop Ayancık State Road — construction",
   "featured": false,
@@ -71,6 +74,8 @@ Dosya adı genelde slug ile aynıdır. Zorunlu alanlar: `slug`, `title_tr`, `sec
 | `body_html_tr` / `body_html_en` | string | Güvenilir kaynaktan HTML |
 | `cover` | string | `/images/...` yolu |
 | `gallery` | string[] | Çoğu projede boş |
+| `video` | string | Gerçek saha videosu (mp4/WebM). Yoksa boş; sahte klip yok |
+| `video_poster` | string | Video poster görseli; `video` doluysa zorunlu |
 | `alt_tr` / `alt_en` | string | Görseli betimleyen metin |
 | `featured` | boolean | Ana sayfa/öne çıkan sıralaması |
 | `sort` | number | Eşit yıl içinde sıra |
@@ -87,6 +92,10 @@ public/images/projects/<slug>/cover-800.webp    → mobil/küçük kart
 ```
 
 Görsel yolu ve alt metin olmadan kayıt eklenmez. Düşük çözünürlüklü kaynak büyütülmez; `low_res: true` kalır.
+
+Ana sayfa hero'su `public/images/hero/sebenoba-{640,1080,1600}.webp` setini kullanır (16:9, proje kapağından kırpılmış). Hero değişirse `home.json` → `heroMedia` yolları ve `src/pages/index.astro` + `src/pages/en/index.astro` birlikte güncellenir.
+
+Video yalnızca gerçek saha/tesis görüntüsü varsa eklenir. `video` + `video_poster` dolduğunda proje detayında `VideoFacade` poster + tıkla-oynat gösterir; otomatik oynatma yok, sahte stok klip yok.
 
 ## 3. Haber
 

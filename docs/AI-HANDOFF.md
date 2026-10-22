@@ -65,18 +65,29 @@ Kullanıcının son yönü:
 - `npm run build`: 268 sayfa; Pagefind 266 sayfa indeksliyor.
 - `npm run validate:content`: 0 hata, 10 uyarı.
 - Playwright + axe: 54 sayfa/genişlik kombinasyonu, 0 sorun.
-- Vercel mobil Lighthouse: Perf 97, A11y 100, BP 100, SEO 69 (önizleme `noindex`). LCP 2,5 s; 2,0 s hedefi açık. CLS 0, TBT 30 ms.
+- Lighthouse yerel mobil simülasyon (22 Ekim yenilemesi): Perf 95, A11y 100,
+  BP 100, LCP 2,4 s, CLS 0, TBT 0. Vercel'de yeniden ölçülmeli. Önceki Vercel
+  koşusu 97 / 2,5 s idi; hero görseli artık 29 KB (1080w).
 
 ### Son tasarım kararları
 
-- MASİS referansındaki net kurumsal hiyerarşi benimsendi.
+- Yön: **ölçülü saha modernizmi** — fotoğraf, ölçü, konum, yıl. Süs değil kanıt.
+- Ana sayfa ritmi: hero → haber şeridi → grup girişi + tarihçe → saha şeridi →
+  sektör mozaiği → öne çıkan proje + kartlar → fotoğraflı sürdürülebilirlik →
+  editoryal haber listesi → CTA.
+- Saha şeridi tek etkileşimli moment: yatay kaydırma, ok düğmeleri, ilerleme.
+- Sektör görselleri stok değil; `home.json` → `sectorMedia` ile gerçek proje
+  kapaklarına bağlı.
+- Proje arşivi 24'lük kademeyle yükleniyor, sektör URL'e yazılıyor.
+- Proje detayı tam genişlik kapak + yapışkan künye + aynı sektörden 3 kayıt.
+- Hakkımızda ve Sürdürülebilirlik sayfalarında üçlü fotoğraf bandı.
 - Koyu üst bilgi şeridi + beyaz sticky header + büyük logo + dropdown okları.
-- Tam genişlikte fotoğraflı hero; altında 570 MW / 485 MW / 14 tesis / 1,5M / 60+ şeridi.
-- Ana sayfada haber şeridi, hakkımızda, sektörler, projeler, sürdürülebilirlik bandı, haberler ve CTA.
-- Proje arşivi ve sektör sayfaları görünür fotoğraf kartları kullanıyor.
-- Türkiye haritası, pinlenmiş yatay tarihçe, hover ile fotoğraf açma ve süslü sayfa geçişi kaldırıldı.
-- `ClientRouter` ve eski `blueprint-wipe` CSS'i tamamen silindi.
-- Chalk zemini `#F2F4F5`; gövde metni `ink` tonlarında.
+- `ClientRouter`, view transition, wipe ve eski `blueprint-wipe` yok.
+- Eski `home-hero`/`content-card`/`sustain-panel` CSS'i silindi; ana sayfa
+  stilleri `src/styles/home.css` içinde, geri kalanı `global.css`.
+- Motion artık yalnızca **Lenis** (autoRaf); `requestIdleCallback` sonrası
+yükleniyor. GSAP, `embla-carousel` ve `zod` kullanılmadığı için kaldırıldı.
+Zaman çizgisi pin'i zaten DOM'da yoktu.
 - Vercel'de formlar `PUBLIC_DEMO_MODE=true` ile demo modundadır (`src/lib/demo.ts`).
 
 ## 5. Mimari
@@ -86,16 +97,18 @@ Astro 7 (static)
 ├── src/pages/*.astro           route'lar
 ├── src/layouts/Base.astro      HTML shell, SEO, font, motion
 ├── src/components/layout       Header, Footer
-├── src/components/home         ana sayfa parçaları
-├── src/components/projects     React proje arşivi
+├── src/components/home         FieldRail (saha şeridi)
+├── src/components/projects     React proje arşivi (24'lük kademe)
 ├── src/components/forms        React formlar
-├── src/components/ui           Logo, Seo
+├── src/components/ui           Logo, Seo, PhotoBand, VideoFacade
 ├── src/lib                     JSON loader + demo
 ├── src/content                 proje/haber/sayfa JSON
-├── src/data                    sektör, istatistik, politika...
-├── src/styles/global.css       Tailwind 4 token + bileşenler
-├── src/scripts/motion.ts       Lenis + GSAP
+├── src/data                    sektör, istatistik, politika, home.json
+├── src/styles/global.css       Tailwind 4 token + ortak bileşenler
+├── src/styles/home.css         ana sayfaya özel sahne stilleri
+├── src/scripts/motion.ts       Lenis (idle sonrası)
 ├── public/images               optimize WebP
+├── public/images/hero          kırpılmış 640/1080/1600 hero seti
 ├── public/belgeler             PDF'ler
 ├── public/*.php                cPanel form endpoint'leri
 └── scripts/                    ithal, optimize, paket, QA
@@ -110,9 +123,14 @@ Astro 7 (static)
 | `src/components/layout/Header.astro` | Üst şerit, masaüstü/mobil menü, dil bağlantısı |
 | `src/pages/index.astro` | TR ana sayfa |
 | `src/pages/en/index.astro` | EN ana sayfa |
+| `src/data/home.json` | Hero, saha şeridi, öne çıkan proje, sektör medyası |
+| `src/components/home/FieldRail.astro` | Yatay saha şeridi + ok/ilerleme script'i |
+| `src/components/ui/PhotoBand.astro` | Kurumsal sayfa fotoğraf bandı |
+| `src/components/ui/VideoFacade.astro` | Gerçek video geldiğinde tıkla-oynat |
+| `src/styles/home.css` | Ana sayfaya özel hero, mozaik, şerit, CTA |
 | `src/lib/projects.ts` | Proje JSON normalizasyonu |
 | `src/lib/news.ts` | Haber JSON normalizasyonu |
-| `src/scripts/motion.ts` | Tek Lenis + GSAP ticker |
+| `src/scripts/motion.ts` | Lenis smooth scroll (idle sonrası dinamik import) |
 | `scripts/qa.mjs` | Playwright + axe kontrolü |
 | `scripts/package-cpanel.mjs` | cPanel zip + 301 üretimi |
 
@@ -151,6 +169,8 @@ Node 22.23.4+ gerekir. Proje npm kullanır; pnpm/yarn karıştırılmaz.
 ### İçerik kalitesi
 
 - 52 proje görseli düşük çözünürlüklü; büyütülmemeli, yüksek çözünürlüklü orijinal istenmeli.
+- Gerçek saha videosu yok. `video` / `video_poster` alanları boş; stok klip eklenmedi.
+- Hero için Sebenoba kapak görseli 1600×1200'den 16:9 kırpıldı; kaynak 4:3.
 - Vektörel logo yok; mevcut PNG 328×145.
 - 2018-02-08 sonrası haber yok.
 - Bazı proje görselleri birden fazla kayıtta tekrar ediyor olabilir.
@@ -180,13 +200,14 @@ Node 22.23.4+ gerekir. Proje npm kullanır; pnpm/yarn karıştırılmaz.
 Kurumsal havayı bozmamak için:
 
 - Video yalnızca gerçek bir sahne/tesis gösteriyorsa kullanılır; stok "teknoloji" klipleri yok.
+- Proje JSON'unda `video` + `video_poster` doldurulduğunda `VideoFacade` devreye girer; poster + tıkla-oynat, otomatik oynatma yok.
 - Hero videosu sessiz, `muted`, `playsinline`, `poster` ve `preload="metadata"` olmalı; otomatik ses yok.
 - `prefers-reduced-motion` altında video durmalı veya poster gösterilmeli.
 - Mobilde video yerine poster kullanmak tercih edilir; LCP görseli video olmamalı.
 - Sayfa geçişi eklenmeyecek. Gerekirse yalnızca 120–180 ms opaklık; tam ekran perde yok.
 - Scroll animasyonu tek güçlü momentte kalmalı; her bölümde fade-up yok.
 - Animasyonlar `transform` ve `opacity` ağırlıklı olmalı; layout/paint tetikleyen özelliklerden kaçınılmalı.
-- GSAP + Lenis tek ticker kuralı korunmalı.
+- Tek scroll kütüphanesi (Lenis) kuralı korunmalı; ikinci bir scroll/animasyon kütüphanesi eklenmemeli.
 - Alt metin, poster ve kaynak bilgisi olmadan medya eklenmez.
 
 ## 10. Başka bir modele verilecek başlangıç promptu
@@ -206,7 +227,7 @@ Repo: https://github.com/Eraycann/fernas-web
 7. docs/DESIGN-SYSTEM.md
 8. docs/DEPLOYMENT.md
 
-Stack: Astro 7 (static) + React 19 adaları + Tailwind 4 + Lenis/GSAP + Pagefind.
+Stack: Astro 7 (static) + React 19 adaları + Tailwind 4 + Lenis + Pagefind.
 Üretim: cPanel public_html. Vercel yalnızca önizleme. Node sunucu, veritabanı, CMS, Next.js, Sanity yok.
 Formlar: yalnızca küçük PHP endpoint'leri.
 

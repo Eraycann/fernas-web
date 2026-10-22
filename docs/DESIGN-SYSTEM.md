@@ -82,15 +82,33 @@ Kurallar:
 
 ## 6. Ana sayfa bölümleri
 
-1. **Hero:** Tam genişlik fotoğraf, koyu lacivert overlay, sol hizalı başlık, iki buton.
-2. **Ölçüm şeridi:** Hero altında 5 değer; mono sayı, küçük etiket.
-3. **Haber şeridi:** En yeni 3 haber, ince çizgi, "Tüm haberler".
-4. **Hakkımızda:** 5/7 kolon; kısa metin, üç bağlantı.
-5. **Sektörler:** Görünür fotoğraf kartları; 3 kolon.
-6. **Projeler:** Görünür fotoğraf kartları; 3 kolon.
-7. **Sürdürülebilirlik:** Koyu lacivert geniş bant; 570 MW / 485 MW / %100.
-8. **Haberler:** Editoryal liste veya kart.
-9. **CTA:** Mavi zemin, tek net eylem.
+1. **Hero:** Tam genişlik gerçek fotoğraf; sol hizalı başlık, iki eylem, sağ altta
+   proje plakası, altta 5 değerli ölçü rayı. Fotoğraf 24 saniyede çok hafif
+   yerleşir; `prefers-reduced-motion` altında durur.
+2. **Haber şeridi:** Koyu mavi ince bant; en yeni 3 haber.
+3. **Grup girişi:** Solda yapışkan başlık + iki paragraf; sağda iki fotoğraf ve
+   kaynaklı kilometre taşları (`timeline.json`).
+4. **Saha şeridi:** Koyu zeminde yatay kaydırmalı 8 gerçek proje; ok düğmeleri,
+   ilerleme çizgisi, mono künye. Tek etkileşimli moment.
+5. **Sektör mozaiği:** 2×2 büyük kare + 5 kare; her kare gerçek proje fotoğrafı,
+   mono metrik. Eşit kart ızgarası değil.
+6. **Projeler:** Bir geniş "feature" (21:9) + 3 kart (4:3); plaka fotoğrafın
+   altında, üstünde değil.
+7. **Sürdürülebilirlik:** Gerçek üretim fotoğrafı üzerinde koyu blok; amber ölçü.
+8. **Haberler:** Tarih raylı editoryal liste; kart değil.
+9. **CTA:** Mavi zemin, büyük başlık, adres/telefon satırı.
+
+### İmza öğeleri
+
+- **Proje plakası:** Fotoğrafın altında duran mono blok; proje · konum · yıl ·
+  kapasite. Her zaman görünür, hover'a saklanmaz.
+- **Saha şeridi:** Yatay snap'li fotoğraf bandı; her karede yıl/sektör ve
+  kapasite. Ana sayfada bir kez.
+- **Ölçü rayı:** Eşit kart değil, tek çizgi üzerinde bölümlenmiş değerler.
+- **Fotoğraflı sessiz blok:** Düz lacivert zemin yerine gerçek tesis fotoğrafı +
+  ölçülü koyu overlay.
+
+Kural: Bu öğelerden en fazla üçü aynı sayfada kullanılır.
 
 ## 7. Kartlar
 
@@ -112,8 +130,12 @@ Kurallar:
 
 ## 9. Hareket
 
-Mevcut kurulum: **tek Lenis + GSAP ticker** (`src/scripts/motion.ts`).
+Mevcut kurulum: **Lenis smooth scroll** (`src/scripts/motion.ts`); GSAP kaldırıldı.
 
+- Script ilk yüklemede değil, `requestIdleCallback` (veya `load`) sonrası
+  dinamik import edilir; hero teslimini bloklamaz.
+- Ana sayfada tek hareket: hero fotoğrafının 24 saniyelik yerleşmesi. Saha
+  şeridi kullanıcı etkileşimiyle çalışır, otomatik kaymaz.
 - Lenis yalnızca `prefers-reduced-motion` yoksa çalışır.
 - Ağır animasyonlar `min-width: 1024px` ve `prefers-reduced-motion: no-preference` koşuluna bağlıdır.
 - Mobilde native scroll; sadece CSS reveal.

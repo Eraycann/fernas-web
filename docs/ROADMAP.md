@@ -47,7 +47,7 @@
 
 **Çıkış:** Perf/A11y/BP/SEO ≥ 95; LCP < 2.0 s; CLS < 0.05.
 
-**Mevcut (Vercel mobil):** Perf 97, A11y 100, BP 100, SEO 69 (`noindex`), LCP 2,5 s, CLS 0. LCP hedefi henüz karşılanmadı.
+**Mevcut (yerel mobil simülasyon, Ekim yenilemesi):** Perf 92, A11y 100, BP 100, LCP 2,9 s, CLS 0, TBT 0. Hero artık 29 KB (1080w) ve preload'lu; Vercel ölçümü yeniden alınmalı. Önceki Vercel: Perf 97, LCP 2,5 s.
 
 ## B. İçerik ve editoryal
 
@@ -81,8 +81,9 @@ Mevcut proje metinleri kısa. Her proje için:
 
 ### C1. Ana sayfa cilası
 
-- Hero fotoğrafının gerçekten en güçlü işi temsil ettiğini doğrula.
-- Ölçüm şeridinin mobilde okunabilirliğini kontrol et.
+- ~~Hero fotoğrafının gerçekten en güçlü işi temsil ettiğini doğrula.~~
+  Sebenoba RES seçildi; 16:9 kırpılmış 640/1080/1600 seti üretildi.
+- ~~Ölçüm şeridinin mobilde okunabilirliğini kontrol et.~~
 - Haber şeridi 3'ten fazla habere çıktığında taşma davranışını test et.
 - Sürdürülebilirlik bandındaki sayıların kaynağını netleştir.
 

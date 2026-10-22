@@ -1,5 +1,22 @@
 ---
 import Base from "../layouts/Base.astro";
+import PhotoBand from "../components/ui/PhotoBand.astro";
+import { loadProjects, type ProjectRecord } from "../lib/projects";
+
+const bySlug = new Map(loadProjects().map((project) => [project.slug, project]));
+const pick = (slug: string): ProjectRecord => {
+  const project = bySlug.get(slug);
+  if (!project) throw new Error(`Proje bulunamadı — ${slug}`);
+  return project;
+};
+
+const band = [
+  "sebenoba-ruzgar-enerji-santrali",
+  "uludere-hidroelektrik-santrali",
+  "fernas-4-gunes-enerji-santrali",
+].map(pick);
+
+const image800 = (src: string) => src.replace(/cover-1600\.webp$/, "cover-800.webp");
 ---
 
 <Base
@@ -53,6 +70,15 @@ import Base from "../layouts/Base.astro";
       </div>
     </div>
   </section>
+
+  <PhotoBand
+    label="Üretim tesislerinden görüntüler"
+    items={band.map((project) => ({
+      src: image800(project.cover),
+      alt: project.alt,
+      caption: [project.title, project.year, project.capacity].filter(Boolean).join(" · "),
+    }))}
+  />
 
   <section class="section">
     <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">

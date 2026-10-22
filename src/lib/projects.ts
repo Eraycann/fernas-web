@@ -20,6 +20,8 @@ export type ProjectRecord = {
   bodyHtmlEn: string;
   cover: string;
   gallery: string[];
+  video: string;
+  videoPoster: string;
   alt: string;
   featured: boolean;
   sort: number;
@@ -65,6 +67,8 @@ type RawProject = Partial<{
   cover: string;
   image: string;
   gallery: string[];
+  video?: string;
+  video_poster?: string;
   alt_tr: string;
   featured: boolean;
   sort: number;
@@ -114,6 +118,8 @@ function normalize(raw: RawProject): ProjectRecord {
     bodyHtmlEn: String(raw.body_html_en ?? ""),
     cover: String(raw.cover ?? raw.image ?? ""),
     gallery: Array.isArray(raw.gallery) ? raw.gallery.filter(Boolean) : [],
+    video: String(raw.video ?? ""),
+    videoPoster: String(raw.video_poster ?? ""),
     alt: String(raw.alt_tr ?? `${raw.title_tr ?? raw.title ?? "Proje"} — Fernas`),
     featured: Boolean(raw.featured),
     sort: Number(raw.sort ?? 0),

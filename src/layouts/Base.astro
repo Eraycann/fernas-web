@@ -15,6 +15,8 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   trPath?: string;
   enPath?: string;
+  preloadImage?: string;
+  preloadImageSrcSet?: string;
 }
 
 const {
@@ -27,6 +29,8 @@ const {
   jsonLd,
   trPath,
   enPath,
+  preloadImage,
+  preloadImageSrcSet,
 } = Astro.props;
 ---
 
@@ -52,8 +56,19 @@ const {
       enPath={enPath}
     />
 
+    {preloadImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={preloadImage}
+        imagesrcset={preloadImageSrcSet}
+        imagesizes="100vw"
+        fetchpriority="high"
+      />
+    )}
+
     <Font cssVariable="--font-archivo" preload />
-    <Font cssVariable="--font-plex-sans" preload />
+    <Font cssVariable="--font-plex-sans" />
     <Font cssVariable="--font-plex-mono" />
   </head>
   <body class:list={[`lang-${lang}`]}>
@@ -64,7 +79,13 @@ const {
     </main>
     <Footer lang={lang} />
     <script>
-      import "../scripts/motion";
+      const loadMotion = () => import("../scripts/motion");
+
+      if (typeof window.requestIdleCallback === "function") {
+        window.requestIdleCallback(() => void loadMotion(), { timeout: 2400 });
+      } else {
+        window.addEventListener("load", () => void loadMotion(), { once: true });
+      }
     </script>
   </body>
 </html>

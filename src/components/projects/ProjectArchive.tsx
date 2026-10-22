@@ -7,6 +7,8 @@ type Props = {
   basePath?: string;
 };
 
+const PAGE_SIZE = 24;
+
 const copy = {
   tr: {
     all: "Tümü",
@@ -18,6 +20,8 @@ const copy = {
     emptyTitle: "Sonuç bulunamadı.",
     emptyBody: "Farklı bir arama veya sektör deneyin.",
     view: "Projeyi incele",
+    more: "Daha fazla proje",
+    shown: "gösteriliyor",
   },
   en: {
     all: "All",
@@ -29,8 +33,17 @@ const copy = {
     emptyTitle: "No results found.",
     emptyBody: "Try a different search term or sector.",
     view: "View project",
+    more: "More projects",
+    shown: "shown",
   },
 } as const;
+
+const statusLabels: Record<string, { tr: string; en: string }> = {
+  tamamlandi: { tr: "Tamamlandı", en: "Completed" },
+  "devam-ediyor": { tr: "Devam ediyor", en: "Ongoing" },
+  isletmede: { tr: "İşletmede", en: "In operation" },
+  planlama: { tr: "Planlama", en: "Planning" },
+};
 
 export default function ProjectArchive({
   projects,
@@ -40,11 +53,13 @@ export default function ProjectArchive({
   const t = copy[lang];
   const [query, setQuery] = useState("");
   const [sector, setSector] = useState("all");
+  const [limit, setLimit] = useState(PAGE_SIZE);
   const deferredQuery = useDeferredValue(query);
 
   const sectors = useMemo(() => {
     const seen = new Set<string>();
-    const items: Array<{ slug: string; label: string }> = [{ slug: "all", label: t.all }];
+    const items: Array<{ slug: string; label: string }> = [];
+    const order = ["insaat", "enerji", "dogalgaz-dagitim", "sanayi", "gida", "turizm"];
 
     for (const project of projects) {
       if (!project.sectorSlug || seen.has(project.sectorSlug)) continue;
@@ -55,7 +70,13 @@ export default function ProjectArchive({
       });
     }
 
-    return items;
+    items.sort((a, b) => {
+      const ai = order.indexOf(a.slug);
+      const bi = order.indexOf(b.slug);
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
+
+    return [{ slug: "all", label: t.all }, ...items];
   }, [projects, lang, t.all]);
 
   useEffect(() => {
@@ -64,6 +85,21 @@ export default function ProjectArchive({
       setSector(requested);
     }
   }, [sectors]);
+
+  useEffect(() => {
+    setLimit(PAGE_SIZE);
+  }, [sector, deferredQuery]);
+
+  const selectSector = (slug: string) => {
+    setSector(slug);
+    const url = new URL(window.location.href);
+    if (slug === "all") {
+      url.searchParams.delete("sector");
+    } else {
+      url.searchParams.set("sector", slug);
+    }
+    window.history.replaceState({}, "", url);
+  };
 
   const filtered = useMemo(() => {
     const search = deferredQuery.trim().toLocaleLowerCase(lang);
@@ -86,11 +122,21 @@ export default function ProjectArchive({
     });
   }, [projects, sector, deferredQuery, lang]);
 
+  const visible = filtered.slice(0, limit);
+  const hasMore = limit < filtered.length;
+
   const projectTitle = (project: ProjectSummary) =>
     lang === "en" ? project.titleEn || project.title : project.title;
   const projectSector = (project: ProjectSummary) =>
     lang === "en" ? project.sectorEn || project.sector : project.sector;
+  const projectStatus = (project: ProjectSummary) =>
+    statusLabels[project.status]?.[lang] ?? project.status;
   const sectorLabel = sectors.find((item) => item.slug === sector)?.label ?? t.all;
+
+  const reset = () => {
+    setQuery("");
+    selectSector("all");
+  };
 
   return (
     <div>
@@ -101,13 +147,13 @@ export default function ProjectArchive({
               <button
                 key={item.slug}
                 type="button"
-                className={`border px-3 py-2 text-[0.72rem] font-medium transition-colors ${
+                className={`border px-3.5 py-2 text-[0.74rem] font-medium transition-colors ${
                   sector === item.slug
                     ? "border-blue bg-blue text-white"
                     : "border-steel/35 text-ink/70 hover:border-blue hover:text-blue"
                 }`}
                 aria-pressed={sector === item.slug}
-                onClick={() => setSector(item.slug)}
+                onClick={() => selectSector(item.slug)}
               >
                 {item.label}
               </button>
@@ -130,19 +176,17 @@ export default function ProjectArchive({
           </label>
         </div>
 
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="mono text-[0.64rem] text-steel" aria-live="polite">
             {filtered.length} {t.count}
             {sector !== "all" ? ` · ${sectorLabel}` : ""}
+            {filtered.length > PAGE_SIZE ? ` · ${visible.length} ${t.shown}` : ""}
           </p>
           {(query || sector !== "all") && (
             <button
               type="button"
               className="mono text-[0.64rem] text-blue underline decoration-blue/40 underline-offset-4"
-              onClick={() => {
-                setQuery("");
-                setSector("all");
-              }}
+              onClick={reset}
             >
               {t.clear}
             </button>
@@ -154,52 +198,67 @@ export default function ProjectArchive({
         <div className="border-b border-steel/30 py-16 text-center">
           <p className="font-display text-[1.5rem] font-semibold tracking-[-0.03em]">{t.emptyTitle}</p>
           <p className="mt-2 text-[0.9rem] text-ink/60">{t.emptyBody}</p>
-          <button
-            type="button"
-            className="btn btn-ghost mt-6"
-            onClick={() => {
-              setQuery("");
-              setSector("all");
-            }}
-          >
+          <button type="button" className="btn btn-ghost mt-6" onClick={reset}>
             {t.clear}
           </button>
         </div>
       ) : (
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((project) => (
-            <a
-              key={project.slug}
-              className="group flex flex-col border border-steel/30 bg-white transition-colors hover:border-blue"
-              href={`${basePath}/${project.slug}/`}
-            >
-              {project.cover && (
-                <img
-                  src={project.cover}
-                  alt={`${projectTitle(project)} — Fernas`}
-                  width="800"
-                  height="500"
-                  loading="lazy"
-                  decoding="async"
-                  className="aspect-[16/10] w-full object-cover"
-                />
-              )}
-              <div className="flex flex-1 flex-col p-5">
-                <p className="mono text-[0.62rem] text-steel">
-                  {[projectSector(project), project.city, project.year]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </p>
-                <h3 className="mt-3 font-display text-[1.2rem] font-semibold leading-[1.1] tracking-[-0.03em] transition-colors group-hover:text-blue">
-                  {projectTitle(project)}
-                </h3>
-                <span className="mono mt-auto pt-5 text-[0.64rem] text-blue">
-                  {t.view} →
+        <>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {visible.map((project) => (
+              <a
+                key={project.slug}
+                className="group flex flex-col border border-steel/30 bg-white transition-colors hover:border-blue"
+                href={`${basePath}/${project.slug}/`}
+              >
+                {project.cover && (
+                  <div className="aspect-[4/3] overflow-hidden bg-chalk">
+                    <img
+                      src={project.cover}
+                      alt={`${projectTitle(project)} — Fernas`}
+                      width="800"
+                      height="600"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-1 flex-col p-5">
+                  <p className="mono text-[0.62rem] text-steel">
+                    {[projectSector(project), project.city, project.year]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                  <h3 className="mt-3 font-display text-[1.2rem] font-semibold leading-[1.1] tracking-[-0.03em] transition-colors group-hover:text-blue">
+                    {projectTitle(project)}
+                  </h3>
+                  <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-5">
+                    <span className="mono text-[0.62rem] text-blue">{t.view} →</span>
+                    {projectStatus(project) && (
+                      <span className="mono text-[0.58rem] text-steel">{projectStatus(project)}</span>
+                    )}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="mt-10 flex flex-col items-start gap-3 border-t border-steel/30 pt-6">
+              <button
+                type="button"
+                className="inline-flex min-h-12 items-center gap-3 border border-steel/40 px-5 text-[0.86rem] font-medium transition-colors hover:border-blue hover:text-blue"
+                onClick={() => setLimit((value) => value + PAGE_SIZE)}
+              >
+                {t.more}
+                <span className="mono text-[0.62rem] text-steel">
+                  {visible.length} / {filtered.length}
                 </span>
-              </div>
-            </a>
-          ))}
-        </div>
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

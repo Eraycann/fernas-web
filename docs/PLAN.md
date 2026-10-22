@@ -144,7 +144,7 @@ interface Project {
 | Framework | Astro 7.4 (statik output) |
 | UI adaları | React 19.3 (`@astrojs/react`) |
 | Stil | Tailwind CSS 4.3 (`@tailwindcss/vite`) |
-| Animasyon | GSAP 3.15 (ScrollTrigger, SplitText, Flip, DrawSVG) + Lenis 1.3 |
+| Animasyon | Lenis 1.3 + CSS geçişleri (GSAP kaldırıldı) |
 | Görsel | `astro:assets` + Sharp 0.35 |
 | İçerik doğrulama | Zod 4 |
 | Arama | Pagefind 1.5 |
@@ -163,7 +163,7 @@ interface Project {
 Geri kalan her şey Astro bileşeni; JS yok.
 
 ### 5.2 Motion kuralları
-- Tek bir ortak Lenis + GSAP ticker.
+- Tek bir ortak Lenis örneği; ikinci scroll kütüphanesi yok.
 - `matchMedia('(min-width: 1024px) and (prefers-reduced-motion: no-preference)')` dışında ağır animasyon yok.
 - Mobilde native scroll; sadece CSS reveal.
 - `ScrollTrigger.refresh()` font/görsel yüklemesinden sonra.

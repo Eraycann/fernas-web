@@ -1,45 +1,42 @@
 ---
 import Base from "../../layouts/Base.astro";
+import FieldRail from "../../components/home/FieldRail.astro";
+import home from "../../data/home.json";
 import sectors from "../../data/sectors.json";
 import stats from "../../data/stats.json";
 import site from "../../data/site.json";
-import { loadProjects } from "../../lib/projects";
+import timeline from "../../data/timeline.json";
+import { loadProjects, type ProjectRecord } from "../../lib/projects";
 import { loadNews } from "../../lib/news";
+import "../../styles/home.css";
 
-const sectorCopy: Record<
-  string,
-  { name: string; description: string; metric: string }
-> = {
-  insaat: {
-    name: "Construction",
-    description: "Roads, bridges, tunnels and infrastructure.",
-    metric: "Since 1982",
-  },
-  enerji: {
-    name: "Energy",
-    description: "Hydroelectric, wind and solar power plants.",
-    metric: "570 MW",
-  },
-  "dogalgaz-dagitim": {
-    name: "Gas Distribution",
-    description: "Distribution and subscriber services in Diyarbakır.",
-    metric: "1.5M people",
-  },
-  sanayi: {
-    name: "Industry",
-    description: "Industrial production in Aksaray, Ankara and Batman.",
-    metric: "14 facilities",
-  },
-  gida: {
-    name: "Food",
-    description: "Agricultural production, processing and cold storage.",
-    metric: "Since 2015",
-  },
-  turizm: {
-    name: "Tourism",
-    description: "Hospitality operations on the Aegean coast.",
-    metric: "Cape Bodrum",
-  },
+const allProjects = loadProjects();
+const bySlug = new Map(allProjects.map((project) => [project.slug, project]));
+
+const pick = (slug: string): ProjectRecord => {
+  const project = bySlug.get(slug);
+  if (!project) throw new Error(`home.json: project not found — ${slug}`);
+  return project;
+};
+
+const hero = pick(home.hero);
+const feature = pick(home.feature);
+const sustain = pick(home.sustainPhoto);
+const rail = home.rail.map(pick);
+const featured = home.featured.map(pick);
+const introPhotos = home.introPhotos.map(pick);
+const sectorMedia = home.sectorMedia as Record<string, string>;
+const news = loadNews().slice(0, 3);
+
+const image800 = (src: string) => src.replace(/cover-1600\.webp$/, "cover-800.webp");
+
+const sectorCopy: Record<string, { name: string; short: string; metric: string }> = {
+  insaat: { name: "Construction", short: "Roads, bridges, tunnels and infrastructure", metric: "Since 1982" },
+  enerji: { name: "Energy", short: "Hydroelectric, wind and solar", metric: "570 MW" },
+  "dogalgaz-dagitim": { name: "Gas Distribution", short: "Diyarbakır and the region", metric: "1.5M people" },
+  sanayi: { name: "Industry", short: "Production and industrial investment", metric: "14 facilities" },
+  gida: { name: "Food", short: "Agriculture and food production", metric: "Since 2015" },
+  turizm: { name: "Tourism", short: "Cape Bodrum", metric: "Cape Bodrum" },
 };
 
 const statLabels = [
@@ -50,8 +47,7 @@ const statLabels = [
   "Projects",
 ];
 
-const projectSelection = loadProjects().slice(0, 6);
-const news = loadNews().slice(0, 3);
+const title = (project: ProjectRecord) => project.titleEn || project.title;
 
 const formatDate = (value: string) =>
   value
@@ -78,36 +74,51 @@ const websiteLd = {
   trPath="/"
   enPath="/en/"
   jsonLd={websiteLd}
+  preloadImage={home.heroMedia.src}
+  preloadImageSrcSet={home.heroMedia.srcset}
 >
   <section class="home-hero" aria-labelledby="home-hero-title">
     <div class="home-hero__media" aria-hidden="true">
       <img
-        src="/images/projects/fernas-4-gunes-enerji-santrali/cover-1600.webp"
-        srcset="
-          /images/projects/fernas-4-gunes-enerji-santrali/cover-800.webp 800w,
-          /images/projects/fernas-4-gunes-enerji-santrali/cover-1600.webp 1600w
-        "
+        src={home.heroMedia.src}
+        srcset={home.heroMedia.srcset}
         sizes="100vw"
         alt=""
         width="1600"
         height="900"
         fetchpriority="high"
-        decoding="sync"
+        decoding="async"
       />
     </div>
+    <div class="home-hero__scrim" aria-hidden="true"></div>
 
     <div class="shell home-hero__inner">
-      <div class="home-hero__content">
-        <p class="eyebrow eyebrow--light">Fernas Group</p>
-        <h1 id="home-hero-title">Building lasting value since 1982.</h1>
-        <p class="home-hero__lede">
-          Fernas operates in construction, energy, gas distribution, industry,
-          food and tourism, bringing investment, construction and operating
-          responsibility together.
-        </p>
-        <div class="home-hero__actions">
-          <a class="btn btn-white" href="/en/about/">About the group</a>
-          <a class="btn btn-light" href="/en/projects/">Our projects</a>
+      <div class="home-hero__top">
+        <span>Ankara · Türkiye</span>
+        <span>Since 1982</span>
+      </div>
+
+      <div class="home-hero__main">
+        <div>
+          <p class="home-hero__kick">Fernas Group</p>
+          <h1 id="home-hero-title">Building lasting value since 1982.</h1>
+          <p class="home-hero__lede">
+            Fernas operates in construction, energy, gas distribution, industry,
+            food and tourism, bringing investment, construction and operating
+            responsibility together.
+          </p>
+          <div class="home-hero__actions">
+            <a class="btn btn-white" href="/en/about/">About the group</a>
+            <a class="btn btn-light" href="/en/projects/">Our projects</a>
+          </div>
+        </div>
+
+        <div class="home-hero__plate">
+          <span>From the field</span>
+          <strong>{title(hero)}</strong>
+          <span>
+            {[hero.year, hero.capacity, hero.sectorEn || hero.sector].filter(Boolean).join(" · ")}
+          </span>
         </div>
       </div>
 
@@ -138,74 +149,105 @@ const websiteLd = {
   </div>
 
   <section class="section bg-white">
-    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
-      <div class="lg:col-span-5">
-        <p class="eyebrow eyebrow--accent">About the group</p>
-        <h2 class="section-title mt-5">Engineering, investment and operation.</h2>
-      </div>
-
-      <div class="lg:col-span-7 lg:pt-8">
-        <p class="max-w-2xl text-[1.06rem] leading-relaxed text-ink/70">
+    <div class="shell home-intro__grid">
+      <div class="home-intro__copy">
+        <p class="home-kicker">About the group</p>
+        <h2>Engineering, investment and operation.</h2>
+        <p>
           Fernas was founded in Ankara in 1982. The group operates in
           construction, energy, gas distribution, industry, food and tourism,
           with projects in Türkiye, the Middle East, South Asia and the Turkic
           republics.
         </p>
-        <p class="mt-4 max-w-2xl text-[1.06rem] leading-relaxed text-ink/70">
+        <p>
           Group companies take responsibility for operating their facilities
           over the long term, not only for building them.
         </p>
-        <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+        <div class="home-intro__links">
           <a class="link-underline" href="/en/about/">About</a>
           <a class="link-underline" href="/en/policies/">Policies</a>
           <a class="link-underline" href="/en/sustainability/">Sustainability</a>
         </div>
       </div>
+
+      <div>
+        <div class="home-intro__figures">
+          {introPhotos.map((project) => (
+            <figure>
+              <img
+                src={project.cover}
+                srcset={`${image800(project.cover)} 800w, ${project.cover} 1600w`}
+                sizes="(max-width: 900px) 45vw, 24rem"
+                alt={`${title(project)} — Fernas`}
+                width="800"
+                height="1000"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                {title(project)}
+                {project.city ? ` · ${project.city}` : ""}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <dl class="home-intro__timeline">
+          {timeline.map((item) => (
+            <div>
+              <dt>{item.year === "Bugün" ? "Today" : item.year}</dt>
+              <dd>
+                <strong>{item.titleEn ?? item.title}</strong>
+                <span>{item.bodyEn ?? item.body}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
   </section>
 
+  <FieldRail projects={rail} index={allProjects.length} lang="en" />
+
   <section class="section bg-chalk" id="sectors">
     <div class="shell">
-      <div class="section-head">
+      <div class="home-head">
         <div>
-          <p class="eyebrow eyebrow--accent">Business areas</p>
-          <h2 class="section-title mt-5">Six sectors, one group.</h2>
+          <h2>Six sectors. One group.</h2>
+          <p>
+            Every sector carries its own engineering and operating rhythm. The
+            shared discipline is to invest, operate and keep the asset working.
+          </p>
         </div>
-        <a class="link-underline" href="/en/about/">About the group</a>
+        <a class="home-link" href="/en/about/">About the group</a>
       </div>
 
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {sectors.map((sector) => {
+      <div class="sector-mosaic">
+        {sectors.map((sector, index) => {
           const copy = sectorCopy[sector.slug];
+          const media = pick(sectorMedia[sector.slug]);
           return (
             <a
-              class="content-card group"
+              class:list={["sector-tile", index === 0 && "sector-tile--feature"]}
               href={`/en/projects/?sector=${sector.slug}`}
             >
-              <div class="content-card__media">
+              <div class="sector-tile__media">
                 <img
-                  src={`/images/sectors/${sector.slug}.webp`}
-                  alt={`${copy.name} — Fernas`}
+                  src={index === 0 ? media.cover : image800(media.cover)}
+                  srcset={`${image800(media.cover)} 800w, ${media.cover} 1600w`}
+                  sizes={index === 0 ? "(max-width: 767px) 100vw, 62rem" : "(max-width: 767px) 100vw, 30rem"}
+                  alt={`${copy.name} — ${title(media)}`}
                   width="800"
                   height="500"
                   loading="lazy"
                   decoding="async"
                 />
               </div>
-              <div class="content-card__body">
-                <div class="flex items-start justify-between gap-4">
-                  <h3 class="content-card__title">{copy.name}</h3>
-                  <span class="mono shrink-0 pt-1 text-[0.62rem] text-steel">
-                    {copy.metric}
-                  </span>
-                </div>
-                <p class="mt-3 text-[0.9rem] leading-relaxed text-ink/65">
-                  {copy.description}
-                </p>
-                <span class="content-card__link">
-                  View projects <span aria-hidden="true">→</span>
-                </span>
+              <div class="sector-tile__body">
+                <h3>{copy.name}</h3>
+                <span class="sector-tile__metric">{copy.metric}</span>
               </div>
+              <p class="sector-tile__short">{copy.short}</p>
             </a>
           );
         })}
@@ -215,39 +257,66 @@ const websiteLd = {
 
   <section class="section bg-white" id="projects">
     <div class="shell">
-      <div class="section-head">
+      <div class="home-head">
         <div>
-          <p class="eyebrow eyebrow--accent">Projects</p>
-          <h2 class="section-title mt-5">Selected projects.</h2>
+          <h2>Work you can measure.</h2>
+          <p>
+            Dams, roads, factories and facilities. Every record in the archive
+            keeps the work, its year and its scale together.
+          </p>
         </div>
-        <a class="link-underline" href="/en/projects/">All projects</a>
+        <a class="home-link" href="/en/projects/">
+          All projects · {allProjects.length}
+        </a>
       </div>
 
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projectSelection.map((project) => (
-          <a class="content-card group" href={`/en/projects/${project.slug}/`}>
-            {project.cover && (
-              <div class="content-card__media">
-                <img
-                  src={project.cover}
-                  alt={`${project.titleEn || project.title} — Fernas`}
-                  width="800"
-                  height="500"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            )}
-            <div class="content-card__body">
-              <p class="mono text-[0.62rem] text-steel">
-                {[project.sectorEn, project.city, project.year].filter(Boolean).join(" · ")}
+      <a class="feature-project" href={`/en/projects/${feature.slug}/`}>
+        <div class="feature-project__media">
+          <img
+            src={feature.cover}
+            srcset={`${image800(feature.cover)} 800w, ${feature.cover} 1600w`}
+            sizes="(max-width: 767px) 100vw, 90rem"
+            alt={`${title(feature)} — Fernas`}
+            width="1600"
+            height="686"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="feature-project__plate">
+          <h3>{title(feature)}</h3>
+          <p class="feature-project__facts">
+            {[feature.sectorEn, feature.city, feature.year, feature.capacity]
+              .filter(Boolean)
+              .map((fact) => (
+                <span>{fact}</span>
+              ))}
+          </p>
+        </div>
+      </a>
+
+      <div class="project-grid">
+        {featured.map((project) => (
+          <a class="project-card" href={`/en/projects/${project.slug}/`}>
+            <div class="project-card__media">
+              <img
+                src={project.cover}
+                srcset={`${image800(project.cover)} 800w, ${project.cover} 1600w`}
+                sizes="(max-width: 767px) 100vw, (max-width: 900px) 45vw, 28rem"
+                alt={`${title(project)} — Fernas`}
+                width="800"
+                height="600"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="project-card__plate">
+              <p class="project-card__meta">
+                {[project.sectorEn, project.city, project.year, project.capacity]
+                  .filter(Boolean)
+                  .join(" · ")}
               </p>
-              <h3 class="content-card__title mt-3">
-                {project.titleEn || project.title}
-              </h3>
-              <span class="content-card__link">
-                View project <span aria-hidden="true">→</span>
-              </span>
+              <h3>{title(project)}</h3>
             </div>
           </a>
         ))}
@@ -255,58 +324,79 @@ const websiteLd = {
     </div>
   </section>
 
-  <section class="section bg-ink text-white">
-    <div class="shell grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
-      <div class="lg:col-span-6">
-        <p class="eyebrow eyebrow--light">Sustainability</p>
-        <h2 class="section-title mt-5">All of our energy is renewable.</h2>
-        <p class="mt-6 max-w-xl text-[1.02rem] leading-relaxed text-white/70">
+  <section class="home-sustain" aria-labelledby="home-sustain-title">
+    <div class="home-sustain__media" aria-hidden="true">
+      <img
+        src={sustain.cover}
+        srcset={`${image800(sustain.cover)} 800w, ${sustain.cover} 1600w`}
+        sizes="100vw"
+        alt=""
+        width="1600"
+        height="900"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="home-sustain__scrim" aria-hidden="true"></div>
+
+    <div class="shell home-sustain__inner">
+      <div>
+        <p class="home-hero__kick">Sustainability</p>
+        <h2 id="home-sustain-title">All of our energy is renewable.</h2>
+        <p>
           All 570 MW of installed capacity comes from renewable sources. 485 MW
           is in operation, with production, environmental impact and operating
           efficiency tracked together.
         </p>
-        <a class="btn btn-light mt-8" href="/en/sustainability/">
-          Sustainability
-        </a>
+        <div class="home-sustain__actions">
+          <a class="btn btn-light" href="/en/sustainability/">Sustainability</a>
+          <a class="btn btn-light" href="/en/policies/">ISO documents</a>
+        </div>
       </div>
 
-      <div class="lg:col-span-6">
-        <div class="sustain-panel">
-          <div>
-            <strong>570<span>MW</span></strong>
-            <small>Installed capacity</small>
-          </div>
-          <div>
-            <strong>485<span>MW</span></strong>
-            <small>In operation</small>
-          </div>
-          <div>
-            <strong>100%</strong>
-            <small>Renewable source</small>
-          </div>
+      <div class="home-sustain__panel">
+        <div>
+          <strong>570<span>MW</span></strong>
+          <small>Installed capacity</small>
+        </div>
+        <div>
+          <strong>485<span>MW</span></strong>
+          <small>In operation</small>
+        </div>
+        <div>
+          <strong>100%</strong>
+          <small>Renewable source</small>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section bg-chalk">
+  <section class="section bg-white">
     <div class="shell">
-      <div class="section-head">
+      <div class="home-head">
         <div>
-          <p class="eyebrow eyebrow--accent">News</p>
-          <h2 class="section-title mt-5">News from the group.</h2>
+          <h2>News from the group.</h2>
+          <p>Project agreements, energy investments and records from the field.</p>
         </div>
-        <a class="link-underline" href="/en/news/">All news</a>
+        <a class="home-link" href="/en/news/">All news</a>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-3">
+      <div class="news-list">
         {news.map((item) => (
-          <a class="content-card group" href={`/en/news/${item.slug}/`}>
+          <a class="news-item" href={`/en/news/${item.slug}/`}>
+            <p class="news-item__date">
+              {formatDate(item.publishedAt)}
+              <span>{item.category}</span>
+            </p>
+            <div>
+              <h3>{item.titleEn || item.title}</h3>
+              <p class="news-item__excerpt">{item.excerptEn || item.excerpt}</p>
+            </div>
             {item.cover && (
-              <div class="content-card__media">
+              <div class="news-item__thumb">
                 <img
-                  src={item.cover}
-                  alt={item.titleEn || item.title}
+                  src={image800(item.cover)}
+                  alt=""
                   width="800"
                   height="500"
                   loading="lazy"
@@ -314,34 +404,30 @@ const websiteLd = {
                 />
               </div>
             )}
-            <div class="content-card__body">
-              <p class="mono text-[0.62rem] text-steel">
-                {formatDate(item.publishedAt)} · {item.category}
-              </p>
-              <h3 class="content-card__title mt-3">
-                {item.titleEn || item.title}
-              </h3>
-              <p class="mt-3 text-[0.88rem] leading-relaxed text-ink/65">
-                {item.excerptEn || item.excerpt}
-              </p>
-            </div>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="section bg-blue text-white">
-    <div class="shell flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
-      <div>
-        <p class="eyebrow eyebrow--light">Contact</p>
-        <h2 class="mt-5 max-w-[18ch] font-display text-[clamp(2rem,3.6vw,3.6rem)] font-semibold leading-[0.98] tracking-[-0.045em]">
-          Let's discuss your project.
-        </h2>
+  <section class="home-cta">
+    <div class="shell">
+      <div class="home-cta__row">
+        <div>
+          <p class="eyebrow eyebrow--light">Contact</p>
+          <h2>Let's discuss your project.</h2>
+        </div>
+        <div class="home-cta__actions">
+          <a class="btn btn-white" href="/en/contact/">Get in touch</a>
+          <a class="btn btn-light" href={`tel:${site.phoneHref}`}>{site.phone}</a>
+        </div>
       </div>
-      <div class="flex flex-wrap gap-3">
-        <a class="btn btn-white" href="/en/contact/">Get in touch</a>
-        <a class="btn btn-light" href={`tel:${site.phoneHref}`}>{site.phone}</a>
+      <div class="home-cta__foot">
+        <span>
+          {site.address.street}, {site.address.district} · {site.address.postalCode}{" "}
+          {site.address.city} / {site.address.region}
+        </span>
+        <span>Ankara · Türkiye</span>
       </div>
     </div>
   </section>

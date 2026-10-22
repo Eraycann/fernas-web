@@ -46,7 +46,7 @@ npm run qa
 | Framework | Astro 7, `output: "static"` |
 | UI adaları | React 19 |
 | Stil | Tailwind CSS 4 |
-| Hareket | Lenis + GSAP (tek ticker) |
+| Hareket | Lenis smooth scroll + CSS (idle sonrası) |
 | Arama | Pagefind |
 | Görseller | WebP, statik dosyalar |
 | Dil | Astro i18n, TR varsayılan + `/en/` |

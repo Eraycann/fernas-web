@@ -12,7 +12,7 @@
 Fernas Şirketler Grubu için **statik** kurumsal site. Üretim çıktısı cPanel `public_html` altına yüklenir; sunucuda Node çalışmaz. Vercel yalnızca önizleme ve paylaşım içindir.
 
 - Kök: `C:\Users\Erayc\fernas-web`
-- Stack: Astro 7 + React 19 adaları + Tailwind 4 + GSAP/Lenis + Pagefind
+- Stack: Astro 7 + React 19 adaları + Tailwind 4 + Lenis + Pagefind
 - Paket yöneticisi: **npm** (pnpm/yarn yok)
 - Dil: TypeScript (strict), Node 22.23.4+
 
@@ -31,7 +31,7 @@ Fernas Şirketler Grubu için **statik** kurumsal site. Üretim çıktısı cPan
 - Mavi taşıyıcı renk (`#045091`); amber yalnızca ölçüm verisi.
 - Tipografi: Archivo (display), IBM Plex Sans (gövde), IBM Plex Mono (veri).
 - Fotoğraflar her zaman görünür; hover yalnızca hafif yükselme ve başlık rengi.
-- Hareket: tek Lenis+GSAP ticker; mobilde ve `prefers-reduced-motion` altında sade.
+- Hareket: tek Lenis smooth scroll + CSS; mobilde ve `prefers-reduced-motion` altında sade.
 - Her bölümde animasyon değil, tek güçlü moment.
 - **Sayfa geçişi ekleme.** `ClientRouter`, view transition, wipe, perde, gecikmeli crossfade yok. Sayfalar normal tam yükleme ile açılır.
 

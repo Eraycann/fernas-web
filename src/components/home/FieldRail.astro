@@ -1,0 +1,158 @@
+---
+import type { ProjectRecord } from "../../lib/projects";
+
+interface Props {
+  projects: ProjectRecord[];
+  lang?: "tr" | "en";
+  index?: number;
+}
+
+const { projects, lang = "tr", index = 105 } = Astro.props;
+const isEn = lang === "en";
+const base = isEn ? "/en/projects" : "/projeler";
+
+const t = isEn
+  ? {
+      heading: "From the field.",
+      lede: "A working archive: roads, plants, dams and wind farms. Every frame is a site Fernas built, commissioned or operates.",
+      prev: "Previous records",
+      next: "Next records",
+      rail: "Field records",
+      archive: "Open the project archive",
+      year: "Year",
+      capacity: "Capacity",
+    }
+  : {
+      heading: "Sahadan kayıtlar.",
+      lede: "Yol, tesis, baraj ve rüzgâr santrali. Her kare, Fernas'ın kurduğu, devreye aldığı veya işlettiği bir saha.",
+      prev: "Önceki kayıtlar",
+      next: "Sonraki kayıtlar",
+      rail: "Saha kayıtları",
+      archive: "Proje arşivini aç",
+      year: "Yıl",
+      capacity: "Kapasite",
+    };
+
+const title = (project: ProjectRecord) =>
+  isEn ? project.titleEn || project.title : project.title;
+const sector = (project: ProjectRecord) =>
+  isEn ? project.sectorEn || project.sector : project.sector;
+const image800 = (src: string) => src.replace(/cover-1600\.webp$/, "cover-800.webp");
+---
+
+<section class="field-rail" data-field-rail aria-labelledby="field-rail-title">
+  <div class="shell field-rail__head">
+    <div class="field-rail__intro">
+      <p class="mono field-rail__count">
+        {String(index).padStart(3, "0")} {isEn ? "records" : "kayıt"} · 1982–{new Date().getFullYear()}
+      </p>
+      <h2 class="field-rail__title" id="field-rail-title">{t.heading}</h2>
+      <p class="field-rail__lede">{t.lede}</p>
+    </div>
+
+    <div class="field-rail__controls">
+      <a class="field-rail__archive" href={isEn ? "/en/projects/" : "/projeler/"}>
+        {t.archive}
+      </a>
+      <div class="field-rail__buttons">
+        <button type="button" data-rail-prev aria-label={t.prev} disabled>
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+            <path d="M18 6H1m0 0 5-5M1 6l5 5" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+        </button>
+        <button type="button" data-rail-next aria-label={t.next}>
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+            <path d="M0 6h17m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="field-rail__viewport">
+    <ul
+      class="field-rail__track"
+      data-rail-track
+      tabindex="0"
+      aria-label={t.rail}
+    >
+      {projects.map((project, i) => (
+        <li class="field-rail__item">
+          <a href={`${base}/${project.slug}/`}>
+            <div class="field-rail__media">
+              <img
+                src={image800(project.cover)}
+                srcset={`${image800(project.cover)} 800w, ${project.cover} 1600w`}
+                sizes="(max-width: 640px) 78vw, 24rem"
+                alt={isEn ? `${title(project)} — Fernas` : project.alt}
+                width="800"
+                height="600"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="field-rail__index mono" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </div>
+            <div class="field-rail__body">
+              <p class="mono field-rail__meta">
+                {[project.year, sector(project)].filter(Boolean).join(" · ")}
+              </p>
+              <h3>{title(project)}</h3>
+              <p class="field-rail__facts">
+                {project.capacity && <span>{project.capacity}</span>}
+                {project.city && <span>{project.city}</span>}
+                {!project.city && project.country && <span>{project.country}</span>}
+              </p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="shell">
+    <div class="field-rail__progress" aria-hidden="true">
+      <span data-rail-progress></span>
+    </div>
+  </div>
+</section>
+
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const setupRail = (rail: HTMLElement) => {
+    const track = rail.querySelector<HTMLElement>("[data-rail-track]");
+    const prev = rail.querySelector<HTMLButtonElement>("[data-rail-prev]");
+    const next = rail.querySelector<HTMLButtonElement>("[data-rail-next]");
+    const progress = rail.querySelector<HTMLElement>("[data-rail-progress]");
+    if (!track) return;
+
+    const step = () => Math.max(track.clientWidth * 0.72, 240);
+
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      const ratio = max > 4 ? track.scrollLeft / max : 1;
+      if (progress) {
+        progress.style.transform = `scaleX(${Math.max(0.04, Math.min(1, ratio))})`;
+      }
+      if (prev) prev.disabled = track.scrollLeft < 8;
+      if (next) next.disabled = track.scrollLeft > max - 8;
+    };
+
+    const go = (direction: 1 | -1) => {
+      track.scrollBy({
+        left: step() * direction,
+        behavior: reduceMotion.matches ? "auto" : "smooth",
+      });
+    };
+
+    prev?.addEventListener("click", () => go(-1));
+    next?.addEventListener("click", () => go(1));
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-field-rail]").forEach(setupRail);
+</script>

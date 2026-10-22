@@ -2,21 +2,29 @@
   {
     "year": "1982",
     "title": "Kuruluş",
-    "body": "Fernas, Ankara'da inşaat ve taahhüt işleriyle faaliyete başladı."
+    "body": "Fernas, Ankara'da inşaat ve taahhüt işleriyle faaliyete başladı.",
+    "titleEn": "Founding",
+    "bodyEn": "Fernas began operations in Ankara in construction and contracting."
   },
   {
     "year": "2006",
     "title": "Doğalgaz dağıtımı",
-    "body": "Diyarbakır'da doğalgaz dağıtımı faaliyetleri başladı."
+    "body": "Diyarbakır'da doğalgaz dağıtımı faaliyetleri başladı.",
+    "titleEn": "Gas distribution",
+    "bodyEn": "Natural gas distribution operations started in Diyarbakır."
   },
   {
     "year": "2015",
     "title": "Gıda",
-    "body": "Tarım ve gıda üretimi grubun faaliyet alanlarına eklendi."
+    "body": "Tarım ve gıda üretimi grubun faaliyet alanlarına eklendi.",
+    "titleEn": "Food",
+    "bodyEn": "Agriculture and food production joined the group's business areas."
   },
   {
     "year": "Bugün",
     "title": "Altı sektör",
-    "body": "İnşaat, enerji, doğalgaz dağıtımı, sanayi, gıda ve turizmde faaliyet."
+    "body": "İnşaat, enerji, doğalgaz dağıtımı, sanayi, gıda ve turizmde faaliyet.",
+    "titleEn": "Today",
+    "bodyEn": "Construction, energy, gas distribution, industry, food and tourism."
   }
 ]
