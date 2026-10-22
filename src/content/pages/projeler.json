@@ -1,0 +1,11 @@
+{
+  "slug": "projeler",
+  "title_tr": "Projeler",
+  "title_en": "",
+  "body_html_tr": "<ul>\n<li><a href=\"https://www.fernas.com.tr/projeler/#\">All</a></li>\n</ul>",
+  "body_html_en": "",
+  "template": "projects-index",
+  "source_url": "https://www.fernas.com.tr/projeler/",
+  "source_url_en": "",
+  "modified_at": "2017-10-22T01:53:31"
+}

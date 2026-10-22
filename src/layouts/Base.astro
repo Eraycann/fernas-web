@@ -1,0 +1,70 @@
+---
+import { Font } from "astro:assets";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import Seo from "../components/ui/Seo.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: "tr" | "en";
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  trPath?: string;
+  enPath?: string;
+}
+
+const {
+  title,
+  description,
+  lang = "tr",
+  image,
+  type = "website",
+  noindex = false,
+  jsonLd,
+  trPath,
+  enPath,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} data-lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#061522" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <Seo
+      title={title}
+      description={description}
+      lang={lang}
+      image={image}
+      type={type}
+      noindex={noindex}
+      jsonLd={jsonLd}
+      trPath={trPath}
+      enPath={enPath}
+    />
+
+    <Font cssVariable="--font-archivo" preload />
+    <Font cssVariable="--font-plex-sans" preload />
+    <Font cssVariable="--font-plex-mono" />
+  </head>
+  <body class:list={[`lang-${lang}`]}>
+    <a class="skip-link" href="#main">{lang === "en" ? "Skip to content" : "İçeriğe geç"}</a>
+    <Header lang={lang} />
+    <main id="main" data-pagefind-body data-pagefind-meta={`title:${title}`}>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script>
+      import "../scripts/motion";
+    </script>
+  </body>
+</html>

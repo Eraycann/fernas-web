@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /styleguide/
+Disallow: /arama/
+
+Sitemap: https://www.fernas.com.tr/sitemap-index.xml

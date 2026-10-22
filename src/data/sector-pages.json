@@ -1,0 +1,74 @@
+{
+  "insaat": {
+    "headline": "Yol, köprü, tünel ve altyapı.",
+    "intro": "Grubun inşaat faaliyetleri, 1982'den beri yol, köprü, tünel ve altyapı projelerinde yapım ve taahhüt işlerini kapsıyor. Saha yönetimi, mühendislik ve devreye alma aynı ekipte yürütülüyor.",
+    "scope": [
+      "Yol ve otoyol projeleri",
+      "Köprü ve tünel işleri",
+      "Altyapı ve sanat yapıları",
+      "Endüstriyel yapı ve saha işleri"
+    ],
+    "metric": "1982",
+    "metricLabel": "kuruluş"
+  },
+  "enerji": {
+    "headline": "Hidroelektrik ve rüzgâr.",
+    "intro": "Grubun enerji portföyü hidroelektrik ve rüzgâr santrallerinden oluşuyor. 570 MW kurulu gücün 485 MW'ı işletmede; üretim ve bakım aynı işletme disipliniyle yürütülüyor.",
+    "scope": [
+      "Hidroelektrik santraller",
+      "Rüzgâr santralleri",
+      "Üretim ve işletme",
+      "Enerji yatırımları"
+    ],
+    "metric": "570 MW",
+    "metricLabel": "kurulu güç"
+  },
+  "dogalgaz-dagitim": {
+    "headline": "Diyarbakır'da dağıtım ağı.",
+    "intro": "Diyarbakır'da 2006'dan beri doğalgaz dağıtımı yürütülüyor. Dağıtım ağı, yaklaşık 1,5 milyon nüfusun hizmetine sunuluyor.",
+    "scope": [
+      "Doğalgaz dağıtımı",
+      "Abone ve müşteri hizmetleri",
+      "Şebeke işletmesi",
+      "Yatırım ve bakım"
+    ],
+    "metric": "1,5M",
+    "metricLabel": "hizmet verilen nüfus"
+  },
+  "sanayi": {
+    "headline": "Üretim ve endüstriyel yatırım.",
+    "intro": "Grubun sanayi faaliyetleri, Aksaray, Ankara ve Batman'da 14 tesiste yürütülüyor. Üretim tesisleri, grup içi ihtiyaç ve piyasa talebi doğrultusunda işletiliyor.",
+    "scope": [
+      "Endüstriyel üretim",
+      "Tesis işletmesi",
+      "Yatırım ve kapasite",
+      "Tedarik zinciri"
+    ],
+    "metric": "14",
+    "metricLabel": "tesis"
+  },
+  "gida": {
+    "headline": "Tarım ve gıda.",
+    "intro": "Gıda faaliyetleri 2015'ten beri grubun iş alanları arasında. Tarım ve gıda üretimi, uzun vadeli işletme yaklaşımıyla yürütülüyor.",
+    "scope": [
+      "Tarımsal üretim",
+      "Gıda üretimi",
+      "İşletme ve tedarik",
+      "Kalite ve izlenebilirlik"
+    ],
+    "metric": "2015",
+    "metricLabel": "başlangıç"
+  },
+  "turizm": {
+    "headline": "Ege'de konaklama.",
+    "intro": "Turizm faaliyetleri, Bodrum'da Cape Bodrum ile yürütülüyor. Konaklama işletmesi, grubun uzun vadeli işletme yaklaşımının bir parçası.",
+    "scope": [
+      "Konaklama",
+      "Tesis işletmesi",
+      "Misafir deneyimi",
+      "Sürdürülebilir turizm"
+    ],
+    "metric": "Cape Bodrum",
+    "metricLabel": "Bodrum"
+  }
+}

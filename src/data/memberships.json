@@ -1,0 +1,82 @@
+[
+  {
+    "name": "ASMÜD",
+    "description": "Türkiye Asfalt Müteahhitleri Derneği",
+    "logo": "/images/memberships/asmud.webp"
+  },
+  {
+    "name": "TÜSİAD",
+    "description": "Türk Sanayicileri ve İşadamları Derneği",
+    "logo": "/images/memberships/tusiad.webp"
+  },
+  {
+    "name": "DEK",
+    "description": "Dünya Enerji Konseyi – Türk Milli Komitesi",
+    "logo": "/images/memberships/dek.webp"
+  },
+  {
+    "name": "MASİS",
+    "description": "Maden Sanayii İşverenleri Sendikası",
+    "logo": "/images/memberships/masis.webp"
+  },
+  {
+    "name": "TÜRKÇİMENTO",
+    "description": "Türkiye Çimento Sanayicileri Birliği",
+    "logo": "/images/memberships/turkcimento.webp"
+  },
+  {
+    "name": "TPB",
+    "description": "Türkiye Prefabrik Birliği",
+    "logo": "/images/memberships/tpb.webp"
+  },
+  {
+    "name": "INTES",
+    "description": "Türkiye İnşaat Sanayicileri ve İşveren Sendikası",
+    "logo": "/images/memberships/intes.webp"
+  },
+  {
+    "name": "TCCC",
+    "description": "Türk-Kanada Ticaret ve Endüstri Oda ve Konseyi",
+    "logo": "/images/memberships/tccc.webp"
+  },
+  {
+    "name": "TMB",
+    "description": "Türkiye Müteahhitler Birliği",
+    "logo": "/images/memberships/tmb.webp"
+  },
+  {
+    "name": "IPL",
+    "description": "International Pipe Line & Offshore Contractors Association",
+    "logo": "/images/memberships/ipl.webp"
+  },
+  {
+    "name": "KÖMÜRDER",
+    "description": "Türkiye Kömür Üreticileri Derneği",
+    "logo": "/images/memberships/komurder.webp"
+  },
+  {
+    "name": "TABA",
+    "description": "Türk-Amerikan İşadamları Derneği",
+    "logo": "/images/memberships/taba.webp"
+  },
+  {
+    "name": "QBA",
+    "description": "Türk-Katar İşadamları Derneği",
+    "logo": "/images/memberships/qba.webp"
+  },
+  {
+    "name": "DEIK",
+    "description": "Dış Ekonomik İlişkiler Kurulu",
+    "logo": "/images/memberships/deik.webp"
+  },
+  {
+    "name": "ÇEİS",
+    "description": "Çimento Endüstrisi İşverenleri Sendikası",
+    "logo": "/images/memberships/ceis.webp"
+  },
+  {
+    "name": "TUREB",
+    "description": "Türkiye Rüzgar Enerjisi Birliği",
+    "logo": "/images/memberships/tureb.webp"
+  }
+]

@@ -1,0 +1,92 @@
+---
+import Base from "../layouts/Base.astro";
+import policies from "../data/policies.json";
+
+const kvkk = policies.find((policy) => policy.code === "PD&PP");
+---
+
+<Base
+  title="KVKK — Fernas Şirketler Grubu"
+  description="Fernas Şirketler Grubu kişisel verilerin korunması: KVKK politikası, aydınlatma formu ve imha politikası."
+>
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Hukuk</p>
+        <h1 class="mt-5 max-w-[13ch] font-display text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+          Kişisel veriler.
+        </h1>
+      </div>
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="section-lede">
+          Kişisel verilerin korunmasına ilişkin politika, aydınlatma formu ve
+          imha politikası. Metinler PDF olarak yayımlanır.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <div class="sticky top-24 border border-steel/30 p-5">
+          <p class="mono text-[0.62rem] text-steel">KAPSAM</p>
+          <p class="mt-4 text-[0.9rem] leading-relaxed text-ink/65">
+            Kişisel verilerin işlenmesi, saklanması ve imhasına ilişkin kurumsal
+            belgeler.
+          </p>
+          <p class="mt-5 border-t border-steel/30 pt-4 text-[0.82rem] leading-relaxed text-ink/70">
+            Bağlantılar yeni sekmede açılır.
+          </p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-8">
+        <div class="border-t border-steel/30">
+          {[
+            {
+              title: "KVKK Politikası",
+              description: "Kişisel verilerin korunması ve işlenmesine ilişkin politika.",
+              file: kvkk?.file ?? "/belgeler/FERNAS-KVKK-POLITIKASI-PDPP.pdf",
+            },
+            {
+              title: "Aydınlatma Formu",
+              description: "Kişisel verilerin işlenmesine ilişkin aydınlatma metni.",
+              file: "/belgeler/kvkk/AYDINLATMA_FORMU.pdf",
+            },
+            {
+              title: "İmha Politikası",
+              description: "Kişisel verilerin saklanması ve imhasına ilişkin usul ve esaslar.",
+              file: "/belgeler/kvkk/FERNAS_AS_IMHA_POLITIKA.pdf",
+            },
+          ].map((document) => (
+            <a
+              class="group grid grid-cols-[1fr_auto] items-start gap-6 border-b border-steel/30 py-6 transition-colors hover:bg-white sm:items-center"
+              href={document.file}
+              target="_blank"
+              rel="noopener"
+            >
+              <div>
+                <h2 class="font-display text-[1.3rem] font-semibold tracking-[-0.03em] group-hover:text-blue">
+                  {document.title}
+                </h2>
+                <p class="mt-2 max-w-lg text-[0.88rem] leading-relaxed text-ink/60">
+                  {document.description}
+                </p>
+              </div>
+              <span class="mono pt-1 text-[0.62rem] text-steel">PDF ↗</span>
+            </a>
+          ))}
+        </div>
+
+        <p class="mt-8 text-[0.85rem] leading-relaxed text-ink/60">
+          Kişisel verilerinize ilişkin talepleriniz için{" "}
+          <a class="text-blue underline decoration-blue/35 underline-offset-2 hover:decoration-blue" href="/iletisim/">
+            iletişim formunu
+          </a>{" "}
+          kullanabilirsiniz.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

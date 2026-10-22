@@ -1,0 +1,133 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Tasarım sistemi"
+  description="Fernas statik site tasarım sistemi: renk, tipografi, bileşenler ve ölçüler."
+  noindex
+>
+  <section class="section">
+    <div class="shell">
+      <p class="eyebrow">Tasarım sistemi</p>
+      <h1 class="mt-5 max-w-[14ch] font-display text-[clamp(3rem,7vw,7rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+        Saha İndeksi.
+      </h1>
+      <p class="mt-6 max-w-2xl text-[1.05rem] leading-relaxed text-ink/70">
+        Renk, tipografi, ölçü ve bileşenler. Bu sayfa yayına dahil edilmez;
+        tasarım kararlarının referansıdır.
+      </p>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell">
+      <h2 class="font-display text-[2rem] font-semibold tracking-[-0.04em]">Renk</h2>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+        {[
+          ["Ink", "#061522", "bg-ink", "text-white"],
+          ["Blue", "#045091", "bg-blue", "text-white"],
+          ["Chalk", "#EEF2F1", "bg-chalk", "text-ink"],
+          ["Steel", "#7A8C97", "bg-steel", "text-white"],
+          ["Amber", "#E08A2B", "bg-amber", "text-ink"],
+          ["White", "#FFFFFF", "bg-white", "text-ink"],
+        ].map(([name, hex, bg, fg]) => (
+          <div class={`${bg} ${fg} border border-steel/20 p-4`}>
+            <p class="mono text-[0.62rem] opacity-70">{hex}</p>
+            <p class="mt-10 font-display text-[1.2rem] font-semibold">{name}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <h2 class="font-display text-[2rem] font-semibold tracking-[-0.04em]">Tipografi</h2>
+        <p class="mt-4 max-w-md text-[0.95rem] leading-relaxed text-ink/65">
+          Archivo başlıklarda, IBM Plex Sans gövdede, IBM Plex Mono yalnızca
+          ölçülen verilerde kullanılır.
+        </p>
+      </div>
+      <div class="lg:col-span-7">
+        <p class="mono text-[0.62rem] text-steel">ARCHIVO / DISPLAY</p>
+        <p class="mt-3 font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold leading-[0.9] tracking-[-0.055em]">
+          Ölçülebilir iş.
+        </p>
+        <p class="mono mt-8 text-[0.62rem] text-steel">IBM PLEX SANS / GÖVDE</p>
+        <p class="mt-3 max-w-xl text-[1rem] leading-relaxed text-ink/75">
+          İnşaattan enerjiye, doğalgaz dağıtımından gıdaya; Fernas, ölçülebilir
+          işler ve uzun vadeli işletme disiplini üzerine kurulu bir şirketler grubu.
+        </p>
+        <p class="mono mt-8 text-[0.62rem] text-steel">IBM PLEX MONO / VERİ</p>
+        <p class="mono mt-3 text-[0.9rem]">570 MW · 485 MW · 14 TESİS · 1,5M NÜFUS</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell">
+      <h2 class="font-display text-[2rem] font-semibold tracking-[-0.04em]">Bileşenler</h2>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a class="btn btn-primary" href="#">Birincil</a>
+        <a class="btn btn-ghost" href="#">İkincil</a>
+        <a class="link-underline" href="#">Bağlantı</a>
+      </div>
+
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <div class="blueprint-grid border border-steel/30 p-6">
+          <p class="mono text-[0.62rem] text-steel">ÖLÇÜM</p>
+          <p class="mt-4 font-display text-[4rem] font-semibold leading-none tracking-[-0.06em]">
+            570<span class="ml-2 align-top text-[0.24em] text-amber">MW</span>
+          </p>
+          <p class="mt-4 text-[0.85rem] text-ink/60">Kurulu güç / yenilenebilir</p>
+        </div>
+        <div class="border border-steel/30">
+          <div class="project-row">
+            <span class="project-row__num">01</span>
+            <span class="project-row__title">Örnek proje satırı</span>
+            <span class="project-row__meta">Enerji</span>
+            <span class="project-row__meta">Ankara · 2026</span>
+            <span class="project-row__arrow">↗</span>
+          </div>
+          <div class="project-row">
+            <span class="project-row__num">02</span>
+            <span class="project-row__title">İkinci proje satırı</span>
+            <span class="project-row__meta">İnşaat</span>
+            <span class="project-row__meta">Sinop · 2018</span>
+            <span class="project-row__arrow">↗</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <h2 class="font-display text-[2rem] font-semibold tracking-[-0.04em]">Form</h2>
+        <p class="mt-4 text-[0.95rem] leading-relaxed text-ink/65">
+          Alanlar 1px çizgi, 2.8rem yükseklik ve görünür odak halkası kullanır.
+        </p>
+      </div>
+      <div class="lg:col-span-7">
+        <form class="grid gap-4">
+          <label class="grid gap-2 text-[0.78rem] font-medium">
+            Ad ve soyad
+            <input class="min-h-11 border border-steel/40 bg-white px-3 text-[0.95rem]" type="text" placeholder="Adınız" />
+          </label>
+          <label class="grid gap-2 text-[0.78rem] font-medium">
+            E-posta
+            <input class="min-h-11 border border-steel/40 bg-white px-3 text-[0.95rem]" type="email" placeholder="ornek@firma.com" />
+          </label>
+          <label class="grid gap-2 text-[0.78rem] font-medium">
+            Mesaj
+            <textarea class="min-h-28 border border-steel/40 bg-white px-3 py-2 text-[0.95rem]" placeholder="Kısa bir not"></textarea>
+          </label>
+          <button class="btn btn-primary justify-self-start" type="button">Gönder</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>

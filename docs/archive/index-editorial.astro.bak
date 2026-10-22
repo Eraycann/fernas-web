@@ -1,0 +1,376 @@
+---
+import Base from "../layouts/Base.astro";
+import TurkeyMap from "../components/home/TurkeyMap.astro";
+import sectors from "../data/sectors.json";
+import stats from "../data/stats.json";
+import projects from "../data/featured-projects.json";
+import news from "../data/latest-news.json";
+import timeline from "../data/timeline.json";
+
+const formatDate = (value: string) =>
+  new Date(`${value}T12:00:00`).toLocaleDateString("tr-TR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
+const sectorTint = (name: string) =>
+  sectors.find((sector) => sector.name.startsWith(name) || name.startsWith(sector.name))?.tint ??
+  "#045091";
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Fernas Şirketler Grubu",
+  url: "https://www.fernas.com.tr",
+  inLanguage: "tr-TR",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://www.fernas.com.tr/arama/?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+};
+---
+
+<Base
+  title="Fernas Şirketler Grubu — Bir grup, altı uzmanlık"
+  description="1982'den beri inşaat, enerji, doğalgaz dağıtımı, sanayi, gıda ve turizm. 570 MW kurulu güç, 14 tesis, 60'ı aşkın proje."
+  jsonLd={websiteLd}
+>
+  <section class="hero" id="sektorler">
+    <div class="shell hero-intro">
+      <div>
+        <p class="eyebrow">1982'den beri · Ankara</p>
+        <h1 class="hero-title">
+          Bir grup.
+          <em>Altı uzmanlık.</em>
+        </h1>
+      </div>
+
+      <div class="hero-copy">
+        <p class="hero-lede">
+          İnşaattan enerjiye, doğalgaz dağıtımından gıdaya; Fernas, ölçülebilir işler
+          ve uzun vadeli işletme disiplini üzerine kurulu bir şirketler grubu.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="/projeler/">Projeleri gör</a>
+          <a class="btn btn-ghost" href="/grup/hakkimizda/">Grubu tanı</a>
+        </div>
+        <div class="hero-meta">
+          <div>
+            <strong>570 MW</strong>
+            <span>kurulu güç</span>
+          </div>
+          <div>
+            <strong>14</strong>
+            <span>tesis</span>
+          </div>
+          <div>
+            <strong>60+</strong>
+            <span>proje</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-slats" aria-label="Faaliyet alanları">
+      {sectors.map((sector, index) => (
+        <a
+          class="hero-slat"
+          href={`/sektorler/${sector.slug}/`}
+          style={`--slat-image:${sector.image ? `url(${sector.image})` : "none"};--slat-tint:${sector.tint}`}
+        >
+          <div class="hero-slat__media" aria-hidden="true"></div>
+          <div class="hero-slat__inner">
+            <span class="hero-slat__num">{String(index + 1).padStart(2, "0")}</span>
+            <div class="hero-slat__bottom">
+              <span class="hero-slat__label">
+                {sector.name}
+                <small>{sector.metric}</small>
+              </span>
+              <p class="hero-slat__desc">{sector.description}</p>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="measure-band" aria-label="Grup ölçüleri">
+    <div class="shell">
+      <div class="measure-grid">
+        {stats.map((stat) => (
+          <div class="measure-item">
+            <strong>
+              {stat.value}
+              {stat.unit && <span>{stat.unit}</span>}
+            </strong>
+            <small>{stat.label}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Grup</p>
+        <h2 class="section-title mt-5">Ölçülebilir iş. Uzun vadeli ortaklık.</h2>
+      </div>
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="section-lede">
+          Bir şirketler grubunun ölçüsü, kurduğu işlerin kaç yıl ayakta kaldığıdır.
+          Fernas; mühendislik, yapım ve işletme sorumluluğunu aynı çizgide tutar.
+        </p>
+        <div class="mt-8 grid gap-0 border-t border-steel/30">
+          {[
+            ["Uzun vadeli bakış", "Yatırımı kurmak kadar işletmek de grubun işi."],
+            ["Mühendislik disiplini", "Her proje ölçü, saha ve devreye alma ile kapanır."],
+            ["İşletme sorumluluğu", "Tesisler, kuruldukları bölgede uzun yıllar çalışır."],
+          ].map(([title, body], index) => (
+            <div class="grid grid-cols-[2.2rem_1fr] gap-4 border-b border-steel/30 py-5">
+              <span class="mono pt-1 text-[0.68rem] text-steel">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 class="font-display text-[1.05rem] font-semibold tracking-[-0.02em]">{title}</h3>
+                <p class="mt-1 text-[0.88rem] leading-relaxed text-ink/65">{body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <a class="link-underline mt-8" href="/grup/hakkimizda/">Hakkımızda</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white" id="projeler">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Seçili projeler</p>
+          <h2 class="section-title mt-5">Sahadan.</h2>
+        </div>
+        <a class="link-underline" href="/projeler/">Tüm projeler</a>
+      </div>
+
+      <div class="project-index">
+        {projects.map((project, index) => (
+          <a
+            class="project-row"
+            href={`/projeler/${project.slug}/`}
+            data-project-title={project.title}
+            data-project-meta={`${project.location} · ${project.year}`}
+            data-project-tint={sectorTint(project.sector)}
+            data-project-image={project.image || ""}
+          >
+            <span class="project-row__num">{String(index + 1).padStart(2, "0")}</span>
+            <span class="project-row__title">{project.title}</span>
+            <span class="project-row__meta">{project.sector}</span>
+            <span class="project-row__meta">{project.location} · {project.year}</span>
+            <span class="project-row__arrow" aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="project-preview" aria-hidden="true">
+        <div class="project-preview__fallback">
+          <span class="mono text-[0.6rem] uppercase tracking-[0.08em] opacity-60">Proje</span>
+          <strong></strong>
+          <span class="mono text-[0.6rem] opacity-60"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-panel section">
+    <div class="shell grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="eyebrow text-white/75">Saha</p>
+        <h2 class="section-title mt-5 text-white">Ankara'dan başlayan bir ağ.</h2>
+        <p class="mt-6 max-w-md text-[0.98rem] leading-relaxed text-white/70">
+          İnşaat sahaları, enerji santralleri, dağıtım ağı ve üretim tesisleri;
+          Türkiye'nin farklı bölgelerinde ve yurt dışında.
+        </p>
+        <dl class="mt-8 grid grid-cols-2 gap-5 border-t border-white/20 pt-5">
+          <div>
+            <dt class="mono text-[0.6rem] text-white/75">Merkez</dt>
+            <dd class="mt-1 font-display text-[1.05rem]">Ankara</dd>
+          </div>
+          <div>
+            <dt class="mono text-[0.6rem] text-white/75">Dağıtım</dt>
+            <dd class="mt-1 font-display text-[1.05rem]">Diyarbakır</dd>
+          </div>
+          <div>
+            <dt class="mono text-[0.6rem] text-white/75">Üretim</dt>
+            <dd class="mt-1 font-display text-[1.05rem]">Aksaray · Ankara · Batman</dd>
+          </div>
+          <div>
+            <dt class="mono text-[0.6rem] text-white/75">Turizm</dt>
+            <dd class="mt-1 font-display text-[1.05rem]">Bodrum</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="lg:col-span-8">
+        <TurkeyMap />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink text-white">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow text-white/75">Tarihçe</p>
+          <h2 class="section-title mt-5 text-white">Kırk yılı aşan bir çizgi.</h2>
+        </div>
+        <a class="link-underline text-white" href="/grup/tarihce/">Tarihçe</a>
+      </div>
+
+      <div class="timeline-pin">
+        <div class="timeline-track" tabindex="0" role="region" aria-label="Fernas tarihçesi">
+          {timeline.map((item) => (
+            <article class="timeline-item">
+              <p class="timeline-item__year">{item.year}</p>
+              <h3 class="timeline-item__title">{item.title}</h3>
+              <p class="timeline-item__body">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-6">
+        <p class="eyebrow">Sürdürülebilirlik</p>
+        <h2 class="section-title mt-5">Enerjinin tamamı yenilenebilir.</h2>
+        <p class="section-lede mt-6">
+          570 MW kurulu gücün tamamı yenilenebilir kaynaklardan. 485 MW işletmede;
+          üretim, çevresel etki ve işletme verimliliği birlikte takip ediliyor.
+        </p>
+        <a class="link-underline mt-8" href="/surdurulebilirlik/">Sürdürülebilirlik</a>
+      </div>
+
+      <div class="lg:col-span-6">
+        <div class="blueprint-grid border border-steel/30 p-6 sm:p-8">
+          <div class="flex items-start justify-between gap-4">
+            <span class="mono text-[0.62rem] text-steel">KURULU GÜÇ / TOPLAM</span>
+            <span class="mono text-[0.62rem] text-steel">TR · 2026</span>
+          </div>
+          <div class="mt-6 font-display text-[clamp(4.5rem,10vw,9rem)] font-semibold leading-[0.8] tracking-[-0.07em]">
+            570<span class="ml-2 align-top text-[0.24em] tracking-normal text-amber">MW</span>
+          </div>
+          <div class="mt-8 grid grid-cols-2 gap-4 border-t border-steel/30 pt-4">
+            <div>
+              <p class="mono text-[0.6rem] text-steel">İŞLETMEDE</p>
+              <p class="mt-1 font-display text-[1.7rem] font-semibold tracking-[-0.03em]">485 MW</p>
+            </div>
+            <div>
+              <p class="mono text-[0.6rem] text-steel">KAYNAK</p>
+              <p class="mt-1 font-display text-[1.7rem] font-semibold tracking-[-0.03em]">%100 yenilenebilir</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Haberler</p>
+          <h2 class="section-title mt-5">Arşivden.</h2>
+        </div>
+        <a class="link-underline" href="/haberler/">Tüm haberler</a>
+      </div>
+
+      <div class="news-grid">
+        {news.map((item) => (
+          <a class="news-card" href={`/haberler/${item.slug}/`}>
+            <span class="news-card__date">{formatDate(item.date)} · {item.category}</span>
+            <h3 class="news-card__title">{item.title}</h3>
+            <p class="news-card__excerpt">{item.excerpt}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-blue text-white">
+    <div class="shell flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+      <div>
+        <p class="eyebrow text-white/75">İletişim</p>
+        <h2 class="mt-5 max-w-[16ch] font-display text-[clamp(2.4rem,5vw,5rem)] font-semibold leading-[0.94] tracking-[-0.05em]">
+          Bir sonraki proje için.
+        </h2>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a class="btn btn-light" href="/iletisim/">İletişime geç</a>
+        <a class="btn btn-light" href="/kariyer/">Kariyer</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  function initProjectPreview() {
+    const preview = document.querySelector<HTMLElement>(".project-preview");
+    const rows = document.querySelectorAll<HTMLElement>(".project-row");
+    if (!preview || rows.length === 0) return;
+    if (!window.matchMedia("(min-width: 900px) and (pointer: fine)").matches) return;
+
+    const fallback = preview.querySelector<HTMLElement>(".project-preview__fallback");
+    const fallbackTitle = fallback?.querySelector("strong");
+    const fallbackMeta = fallback?.querySelector("span:last-child");
+
+    let visible = false;
+
+    const move = (event: PointerEvent) => {
+      if (!visible) return;
+      const padding = 28;
+      const width = preview.offsetWidth;
+      const height = preview.offsetHeight;
+      const x = Math.min(Math.max(event.clientX + padding, width / 2 + 12), window.innerWidth - width / 2 - 12);
+      const y = Math.min(Math.max(event.clientY + padding, height / 2 + 12), window.innerHeight - height / 2 - 12);
+      preview.style.left = `${x}px`;
+      preview.style.top = `${y}px`;
+    };
+
+    rows.forEach((row) => {
+      row.addEventListener("pointerenter", (event) => {
+        const title = row.dataset.projectTitle ?? "";
+        const meta = row.dataset.projectMeta ?? "";
+        const tint = row.dataset.projectTint ?? "#045091";
+        const image = row.dataset.projectImage ?? "";
+
+        if (fallback) {
+          fallback.style.background = `linear-gradient(160deg, ${tint}, #061522)`;
+          fallback.style.backgroundImage = image
+            ? `linear-gradient(180deg, rgba(6,21,34,.05), rgba(6,21,34,.82)), url(${image})`
+            : `linear-gradient(160deg, ${tint}, #061522)`;
+          fallback.style.backgroundSize = "cover";
+          fallback.style.backgroundPosition = "center";
+          if (fallbackTitle) fallbackTitle.textContent = title;
+          if (fallbackMeta) fallbackMeta.textContent = meta;
+        }
+
+        preview.classList.add("is-visible");
+        visible = true;
+        move(event);
+      });
+
+      row.addEventListener("pointermove", move);
+      row.addEventListener("pointerleave", () => {
+        preview.classList.remove("is-visible");
+        visible = false;
+      });
+    });
+  }
+
+  initProjectPreview();
+  document.addEventListener("astro:page-load", initProjectPreview);
+</script>

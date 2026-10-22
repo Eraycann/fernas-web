@@ -1,0 +1,75 @@
+---
+import Base from "../../layouts/Base.astro";
+import memberships from "../../data/memberships.json";
+---
+
+<Base
+  title="Üyelikler — Fernas Şirketler Grubu"
+  description="Fernas Şirketler Grubu'nun üye olduğu sektörel ve iş dünyası kuruluşları."
+>
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Kurumsal</p>
+        <h1 class="mt-5 max-w-[13ch] font-display text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+          Üyelikler.
+        </h1>
+      </div>
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="section-lede">
+          Fernas, faaliyet gösterdiği sektörlerdeki meslek kuruluşları ve iş
+          dünyası örgütlerinde aktif olarak yer alıyor.
+        </p>
+        <p class="mono mt-6 text-[0.64rem] text-steel">{memberships.length} kurum</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell">
+      <div class="grid gap-px bg-steel/25 sm:grid-cols-2 lg:grid-cols-4">
+        {memberships.map((membership) => (
+          <article class="group flex min-h-64 flex-col justify-between bg-chalk p-6 transition-colors hover:bg-white">
+            <div class="flex h-20 items-center">
+              {membership.logo ? (
+                <img
+                  src={membership.logo}
+                  alt={`${membership.name} logosu`}
+                  width="320"
+                  height="160"
+                  loading="lazy"
+                  decoding="async"
+                  class="max-h-16 w-auto max-w-[11rem] object-contain opacity-75 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                />
+              ) : (
+                <span class="font-display text-[1.6rem] font-semibold tracking-[-0.04em] text-blue">
+                  {membership.name}
+                </span>
+              )}
+            </div>
+            <div class="mt-8 border-t border-steel/25 pt-4">
+              <h2 class="font-display text-[1.15rem] font-semibold tracking-[-0.02em]">
+                {membership.name}
+              </h2>
+              <p class="mt-2 text-[0.82rem] leading-relaxed text-ink/60">
+                {membership.description}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink text-white">
+    <div class="shell flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+      <div>
+        <p class="eyebrow text-white/75">Birlikte</p>
+        <h2 class="mt-5 max-w-[16ch] font-display text-[clamp(2rem,3.6vw,3.6rem)] font-semibold leading-[0.94] tracking-[-0.05em]">
+          Sektörün ortak masasında.
+        </h2>
+      </div>
+      <a class="btn btn-light" href="/iletisim/">İletişime geç</a>
+    </div>
+  </section>
+</Base>

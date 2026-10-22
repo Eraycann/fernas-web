@@ -1,0 +1,32 @@
+[
+  {
+    "value": "570",
+    "valueEn": "570",
+    "unit": "MW",
+    "label": "Kurulu güç"
+  },
+  {
+    "value": "485",
+    "valueEn": "485",
+    "unit": "MW",
+    "label": "İşletmede"
+  },
+  {
+    "value": "14",
+    "valueEn": "14",
+    "unit": "",
+    "label": "Tesis"
+  },
+  {
+    "value": "1,5",
+    "valueEn": "1.5",
+    "unit": "M",
+    "label": "Hizmet verilen nüfus"
+  },
+  {
+    "value": "60",
+    "valueEn": "60",
+    "unit": "+",
+    "label": "Proje"
+  }
+]

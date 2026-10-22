@@ -1,0 +1,142 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Sürdürülebilirlik"
+  description="Fernas'ta 570 MW kurulu gücün tamamı yenilenebilir kaynaklardan. 485 MW işletmede, 14 tesis. Çevre yönetimi ve uzun vadeli işletme disiplini."
+>
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Sürdürülebilirlik</p>
+        <h1 class="mt-5 max-w-[13ch] font-display text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+          Sürdürülebilir üretim.
+        </h1>
+      </div>
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="section-lede">
+          Sürdürülebilirlik, bir rapor cümlesi değil; tesisin kaç yıl çalıştığı,
+          üretimin hangi kaynaktan geldiği ve çevresel etkinin nasıl yönetildiğidir.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="/grup/politikalar/">Politikalar</a>
+          <a class="btn btn-ghost" href="/grup/kalite-belgeleri/">Belgeler</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="measure-band">
+    <div class="shell">
+      <div class="measure-grid">
+        <div class="measure-item">
+          <strong>570<span>MW</span></strong>
+          <small>Kurulu güç</small>
+        </div>
+        <div class="measure-item">
+          <strong>485<span>MW</span></strong>
+          <small>İşletmede</small>
+        </div>
+        <div class="measure-item">
+          <strong>%100</strong>
+          <small>Yenilenebilir kaynak</small>
+        </div>
+        <div class="measure-item">
+          <strong>14</strong>
+          <small>Tesis</small>
+        </div>
+        <div class="measure-item">
+          <strong>1,5<span>M</span></strong>
+          <small>Dağıtım ağında nüfus</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <p class="eyebrow">Enerji</p>
+        <h2 class="section-title mt-5">Üretim, kaynağından başlar.</h2>
+      </div>
+      <div class="lg:col-span-7">
+        <p class="section-lede">
+          570 MW kurulu gücün tamamı yenilenebilir kaynaklardan oluşuyor.
+          Hidroelektrik ve rüzgâr santralleri, grubun enerji portföyünün
+          omurgasını oluşturuyor. 485 MW kapasite işletmede.
+        </p>
+
+        <div class="mt-10 grid gap-0 border-t border-steel/30">
+          {[
+            ["Hidroelektrik", "Su kaynağına bağlı üretim; debi ve seviye takibiyle işletilir."],
+            ["Rüzgâr", "Saha verisi ve türbin kullanılabilirliği üzerinden işletilir."],
+            ["İşletme", "Üretim, bakım ve çevresel izleme aynı ekipte yürütülür."],
+          ].map(([title, body]) => (
+            <div class="border-b border-steel/30 py-6">
+              <div>
+                <h3 class="font-display text-[1.3rem] font-semibold tracking-[-0.03em]">{title}</h3>
+                <p class="mt-2 max-w-lg text-[0.9rem] leading-relaxed text-ink/65">{body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink text-white">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <p class="eyebrow text-white/75">Yönetim</p>
+        <h2 class="section-title mt-5 text-white">Ölç, izle, düzelt.</h2>
+      </div>
+      <div class="lg:col-span-7">
+        <p class="text-[1.02rem] leading-relaxed text-white/70">
+          Çevre ve iş güvenliği, proje yönetiminin ayrılmaz parçası. Tesislerde
+          ISO 14001 çevre yönetimi, ISO 45001 iş sağlığı ve güvenliği ile
+          ISO 9001 kalite yönetimi esasları uygulanıyor.
+        </p>
+
+        <div class="mt-10 grid gap-5 sm:grid-cols-3">
+          {[
+            ["ISO 14001", "Çevre yönetimi"],
+            ["ISO 45001", "İş sağlığı ve güvenliği"],
+            ["ISO 9001", "Kalite yönetimi"],
+          ].map(([code, label]) => (
+            <div class="border border-white/20 p-5">
+              <p class="mono text-[0.68rem] text-amber">{code}</p>
+              <p class="mt-3 text-[0.9rem] text-white/70">{label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a class="link-underline text-white" href="/grup/kalite-belgeleri/">Kalite belgeleri</a>
+          <a class="link-underline text-white" href="/grup/politikalar/">Çevre politikası</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <p class="eyebrow">Topluluk</p>
+        <h2 class="section-title mt-5">Faaliyet gösterdiğimiz yerde.</h2>
+      </div>
+      <div class="lg:col-span-7">
+        <p class="section-lede">
+          Doğalgaz dağıtımı, Diyarbakır'da 2006'dan beri sürüyor. Üretim
+          tesisleri Aksaray, Ankara ve Batman'da. Grup, faaliyet gösterdiği
+          bölgelerde uzun vadeli işletme, yerel istihdam ve çevresel sorumluluk
+          yaklaşımını sürdürüyor.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a class="link-underline" href="/sektorler/dogalgaz-dagitim/">Doğalgaz dağıtımı</a>
+          <a class="link-underline" href="/projeler/">Proje arşivi</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

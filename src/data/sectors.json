@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "insaat",
+    "name": "İnşaat",
+    "short": "Yol, köprü, tünel ve altyapı",
+    "description": "Yol, köprü, tünel ve altyapı projelerinde mühendislik, yapım ve işletme.",
+    "metric": "1982'den beri",
+    "image": "",
+    "tint": "#0b3a5c"
+  },
+  {
+    "slug": "enerji",
+    "name": "Enerji",
+    "short": "Hidroelektrik, rüzgâr, güneş",
+    "description": "Hidroelektrik, rüzgâr ve güneş santrallerinde kurulu ve işletmede kapasite.",
+    "metric": "570 MW",
+    "image": "",
+    "tint": "#045091"
+  },
+  {
+    "slug": "dogalgaz-dagitim",
+    "name": "Doğalgaz Dağıtımı",
+    "short": "Diyarbakır ve bölgesi",
+    "description": "Diyarbakır'da 2006'dan beri doğalgaz dağıtımı ve abone hizmetleri.",
+    "metric": "1,5M nüfus",
+    "image": "",
+    "tint": "#0a4a6e"
+  },
+  {
+    "slug": "sanayi",
+    "name": "Sanayi",
+    "short": "Üretim ve endüstriyel yatırım",
+    "description": "Aksaray, Ankara ve Batman'da endüstriyel üretim ve yatırımlar.",
+    "metric": "14 tesis",
+    "image": "",
+    "tint": "#1c3f4a"
+  },
+  {
+    "slug": "gida",
+    "name": "Gıda",
+    "short": "Tarım ve gıda üretimi",
+    "description": "2015'ten beri tarım ve gıda alanında üretim ve işletme.",
+    "metric": "2015",
+    "image": "",
+    "tint": "#3d4a2c"
+  },
+  {
+    "slug": "turizm",
+    "name": "Turizm",
+    "short": "Cape Bodrum",
+    "description": "Cape Bodrum ile Ege'de konaklama ve turizm işletmeciliği.",
+    "metric": "Cape Bodrum",
+    "image": "",
+    "tint": "#2d4b57"
+  }
+]

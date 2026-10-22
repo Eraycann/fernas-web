@@ -1,0 +1,22 @@
+{
+  "name": "Fernas Şirketler Grubu",
+  "shortName": "Fernas",
+  "url": "https://www.fernas.com.tr",
+  "founded": 1982,
+  "address": {
+    "street": "Doğukent Bulvarı 495. Sokak No:2",
+    "district": "Birlik Mahallesi",
+    "postalCode": "06610",
+    "city": "Çankaya",
+    "region": "Ankara",
+    "country": "TR"
+  },
+  "phone": "+90 312 454 16 00",
+  "phoneHref": "+903124541600",
+  "email": "",
+  "social": {
+    "linkedin": "",
+    "instagram": "",
+    "x": ""
+  }
+}

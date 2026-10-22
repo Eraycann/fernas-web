@@ -1,0 +1,224 @@
+---
+import Logo from "../ui/Logo.astro";
+import site from "../../data/site.json";
+
+interface Props {
+  lang?: "tr" | "en";
+}
+
+const { lang = "tr" } = Astro.props;
+const isEn = lang === "en";
+const year = new Date().getFullYear();
+
+const t = isEn
+  ? {
+      statement:
+        "Construction, energy, gas distribution, industry, food and tourism since 1982.",
+      contact: "Contact us",
+      sectors: "Sectors",
+      group: "Group",
+      about: "About",
+      sustainability: "Sustainability",
+      policies: "Policies",
+      contactHeading: "Contact",
+      contactForm: "Contact form",
+      rights: "All rights reserved.",
+      privacy: "Privacy",
+      location: "Ankara · Türkiye",
+    }
+  : {
+      statement:
+        "1982'den beri inşaat, enerji, doğalgaz dağıtımı, sanayi, gıda ve turizm.",
+      contact: "Bize ulaşın",
+      sectors: "Sektörler",
+      group: "Grup",
+      about: "Hakkımızda",
+      sustainability: "Sürdürülebilirlik",
+      policies: "Politikalar",
+      contactHeading: "İletişim",
+      contactForm: "İletişim formu",
+      rights: "Tüm hakları saklıdır.",
+      privacy: "KVKK",
+      location: "Ankara · Türkiye",
+    };
+
+const sectorLinks = [
+  { slug: "insaat", tr: "İnşaat", en: "Construction" },
+  { slug: "enerji", tr: "Enerji", en: "Energy" },
+  { slug: "dogalgaz-dagitim", tr: "Doğalgaz dağıtımı", en: "Gas distribution" },
+  { slug: "sanayi", tr: "Sanayi", en: "Industry" },
+  { slug: "gida", tr: "Gıda", en: "Food" },
+  { slug: "turizm", tr: "Turizm", en: "Tourism" },
+];
+
+const sectorHref = (slug: string) =>
+  isEn ? `/en/projects/?sector=${slug}` : `/sektorler/${slug}/`;
+---
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <Logo variant="light" href={isEn ? "/en/" : "/"} />
+        <p class="footer-statement">{t.statement}</p>
+        <a class="footer-mail" href={isEn ? "/en/contact/" : "/iletisim/"}>{t.contact}</a>
+      </div>
+
+      <div>
+        <p class="footer-heading">{t.sectors}</p>
+        <div class="footer-list">
+          {sectorLinks.map((sector) => (
+            <a href={sectorHref(sector.slug)}>{isEn ? sector.en : sector.tr}</a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-heading">{t.group}</p>
+        <div class="footer-list">
+          <a href={isEn ? "/en/about/" : "/grup/hakkimizda/"}>{t.about}</a>
+          {!isEn && <a href="/grup/tarihce/">Tarihçe</a>}
+          {!isEn && <a href="/grup/uyelikler/">Üyelikler</a>}
+          {!isEn && <a href="/grup/kalite-belgeleri/">Kalite belgeleri</a>}
+          {!isEn && <a href="/grup/bilgi-toplumu/">Bilgi toplumu hizmetleri</a>}
+          <a href={isEn ? "/en/policies/" : "/grup/politikalar/"}>{t.policies}</a>
+          <a href={isEn ? "/en/sustainability/" : "/surdurulebilirlik/"}>{t.sustainability}</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-heading">{t.contactHeading}</p>
+        <address class="footer-address">
+          {site.address.street}<br />
+          {site.address.district}, {site.address.postalCode}<br />
+          {site.address.city} / {site.address.region}
+        </address>
+        <a class="footer-phone" href={`tel:${site.phoneHref}`}>{site.phone}</a>
+        <a class="footer-mail" href={isEn ? "/en/contact/" : "/iletisim/"}>{t.contactForm}</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} Fernas Şirketler Grubu. {t.rights}</span>
+      <div class="footer-legal">
+        <a href={isEn ? "/en/privacy/" : "/kvkk/"}>{t.privacy}</a>
+        <a href={isEn ? "/en/policies/" : "/grup/politikalar/"}>{t.policies}</a>
+      </div>
+      <span>{t.location}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 0.7fr));
+    gap: 2rem;
+    padding-block: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.35rem;
+    max-width: 24rem;
+  }
+
+  .footer-statement {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-white) 78%, transparent);
+  }
+
+  .footer-heading {
+    margin-block-end: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+    color: color-mix(in srgb, var(--color-white) 74%, transparent);
+  }
+
+  .footer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.84rem;
+    color: color-mix(in srgb, var(--color-white) 82%, transparent);
+  }
+
+  .footer-list a:hover,
+  .footer-mail:hover,
+  .footer-phone:hover {
+    color: var(--color-white);
+  }
+
+  .footer-address {
+    margin-block-end: 1rem;
+    font-style: normal;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-white) 82%, transparent);
+  }
+
+  .footer-phone {
+    display: block;
+    margin-block-end: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-white);
+  }
+
+  .footer-mail {
+    display: inline-block;
+    padding-block-end: 0.15rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-white) 38%, transparent);
+    font-size: 0.82rem;
+    color: color-mix(in srgb, var(--color-white) 88%, transparent);
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  .footer-mail:hover {
+    border-color: var(--color-white);
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.2rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-white) 14%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: color-mix(in srgb, var(--color-white) 70%, transparent);
+  }
+
+  .footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-legal a:hover {
+    color: var(--color-white);
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-brand {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+    .footer-brand {
+      grid-column: auto;
+    }
+  }
+</style>

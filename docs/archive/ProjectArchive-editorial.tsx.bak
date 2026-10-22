@@ -1,0 +1,252 @@
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import type { ProjectSummary } from "../../lib/projects";
+
+type Props = {
+  projects: ProjectSummary[];
+  lang?: "tr" | "en";
+  basePath?: string;
+};
+
+const tints: Record<string, string> = {
+  insaat: "#0b3a5c",
+  enerji: "#045091",
+  "dogalgaz-dagitim": "#0a4a6e",
+  sanayi: "#1c3f4a",
+  gida: "#3d4a2c",
+  turizm: "#2d4b57",
+  diger: "#045091",
+};
+
+const copy = {
+  tr: {
+    all: "Tümü",
+    filterLabel: "Sektöre göre filtrele",
+    searchLabel: "Proje ara",
+    searchPlaceholder: "Proje, şehir veya yıl ara",
+    count: "proje",
+    clear: "Filtreleri temizle",
+    emptyTitle: "Sonuç bulunamadı.",
+    emptyBody: "Farklı bir arama veya sektör deneyin.",
+    project: "Proje",
+  },
+  en: {
+    all: "All",
+    filterLabel: "Filter by sector",
+    searchLabel: "Search projects",
+    searchPlaceholder: "Search project, city or year",
+    count: "projects",
+    clear: "Clear filters",
+    emptyTitle: "No results found.",
+    emptyBody: "Try a different search term or sector.",
+    project: "Project",
+  },
+} as const;
+
+export default function ProjectArchive({
+  projects,
+  lang = "tr",
+  basePath = "/projeler",
+}: Props) {
+  const t = copy[lang];
+  const [query, setQuery] = useState("");
+  const [sector, setSector] = useState("all");
+  const [hovered, setHovered] = useState<ProjectSummary | null>(null);
+  const deferredQuery = useDeferredValue(query);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const sectors = useMemo(() => {
+    const seen = new Set<string>();
+    const items = [{ slug: "all", label: t.all }];
+
+    for (const project of projects) {
+      if (!project.sectorSlug || seen.has(project.sectorSlug)) continue;
+      seen.add(project.sectorSlug);
+      items.push({
+        slug: project.sectorSlug,
+        label: lang === "en" ? project.sectorEn || project.sector : project.sector,
+      });
+    }
+
+    return items;
+  }, [projects, lang, t.all]);
+
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("sector");
+    if (requested && sectors.some((item) => item.slug === requested)) {
+      setSector(requested);
+    }
+  }, [sectors]);
+
+  const filtered = useMemo(() => {
+    const search = deferredQuery.trim().toLocaleLowerCase(lang);
+    return projects.filter((project) => {
+      if (sector !== "all" && project.sectorSlug !== sector) return false;
+      if (!search) return true;
+      return [
+        project.title,
+        project.titleEn,
+        project.sector,
+        project.sectorEn,
+        project.city,
+        project.country,
+        project.year,
+        project.capacity,
+      ]
+        .join(" ")
+        .toLocaleLowerCase(lang)
+        .includes(search);
+    });
+  }, [projects, sector, deferredQuery, lang]);
+
+  function movePreview(event: React.PointerEvent<HTMLAnchorElement>) {
+    const preview = previewRef.current;
+    if (!preview) return;
+    const padding = 26;
+    const width = preview.offsetWidth;
+    const height = preview.offsetHeight;
+    const x = Math.min(
+      Math.max(event.clientX + padding, width / 2 + 12),
+      window.innerWidth - width / 2 - 12,
+    );
+    const y = Math.min(
+      Math.max(event.clientY + padding, height / 2 + 12),
+      window.innerHeight - height / 2 - 12,
+    );
+    preview.style.left = `${x}px`;
+    preview.style.top = `${y}px`;
+  }
+
+  const projectTitle = (project: ProjectSummary) =>
+    lang === "en" ? project.titleEn || project.title : project.title;
+  const projectSector = (project: ProjectSummary) =>
+    lang === "en" ? project.sectorEn || project.sector : project.sector;
+  const sectorLabel = sectors.find((item) => item.slug === sector)?.label ?? t.all;
+
+  return (
+    <div>
+      <div className="flex flex-col gap-5 border-y border-steel/30 py-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-wrap gap-2" role="group" aria-label={t.filterLabel}>
+            {sectors.map((item) => (
+              <button
+                key={item.slug}
+                type="button"
+                className={`border px-3 py-2 text-[0.72rem] font-medium transition-colors ${
+                  sector === item.slug
+                    ? "border-blue bg-blue text-white"
+                    : "border-steel/35 text-ink/70 hover:border-blue hover:text-blue"
+                }`}
+                aria-pressed={sector === item.slug}
+                onClick={() => setSector(item.slug)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          <label className="flex min-h-11 w-full items-center gap-2 border border-steel/35 bg-white px-3 lg:w-72">
+            <span className="sr-only">{t.searchLabel}</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.2" />
+              <path d="m9.5 9.5 3 3" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={t.searchPlaceholder}
+              className="w-full bg-transparent text-[0.85rem] outline-none placeholder:text-steel/80"
+            />
+          </label>
+        </div>
+
+        <div className="flex items-center justify-between gap-4">
+          <p className="mono text-[0.64rem] text-steel" aria-live="polite">
+            {filtered.length} {t.count}
+            {sector !== "all" ? ` · ${sectorLabel}` : ""}
+          </p>
+          {(query || sector !== "all") && (
+            <button
+              type="button"
+              className="mono text-[0.64rem] text-blue underline decoration-blue/40 underline-offset-4"
+              onClick={() => {
+                setQuery("");
+                setSector("all");
+              }}
+            >
+              {t.clear}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="border-b border-steel/30 py-16 text-center">
+          <p className="font-display text-[1.5rem] font-semibold tracking-[-0.03em]">{t.emptyTitle}</p>
+          <p className="mt-2 text-[0.9rem] text-ink/60">{t.emptyBody}</p>
+          <button
+            type="button"
+            className="btn btn-ghost mt-6"
+            onClick={() => {
+              setQuery("");
+              setSector("all");
+            }}
+          >
+            {t.clear}
+          </button>
+        </div>
+      ) : (
+        <div className="project-index">
+          {filtered.map((project, index) => (
+            <a
+              key={project.slug}
+              className="project-row"
+              href={`${basePath}/${project.slug}/`}
+              onPointerEnter={(event) => {
+                setHovered(project);
+                movePreview(event);
+              }}
+              onPointerMove={movePreview}
+              onPointerLeave={() => setHovered(null)}
+              onFocus={() => setHovered(project)}
+              onBlur={() => setHovered(null)}
+            >
+              <span className="project-row__num">{String(index + 1).padStart(2, "0")}</span>
+              <span className="project-row__title">{projectTitle(project)}</span>
+              <span className="project-row__meta">{projectSector(project)}</span>
+              <span className="project-row__meta">
+                {[project.city, project.year].filter(Boolean).join(" · ")}
+              </span>
+              <span className="project-row__arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      )}
+
+      <div
+        ref={previewRef}
+        className={`project-preview ${hovered ? "is-visible" : ""}`}
+        aria-hidden="true"
+      >
+        {hovered?.cover ? (
+          <img src={hovered.cover} alt="" loading="lazy" decoding="async" />
+        ) : (
+          <div
+            className="project-preview__fallback"
+            style={{
+              background: `linear-gradient(160deg, ${tints[hovered?.sectorSlug ?? "diger"] ?? "#045091"}, #061522)`,
+            }}
+          >
+            <span className="mono text-[0.6rem] uppercase tracking-[0.08em] opacity-60">
+              {hovered ? projectSector(hovered) : t.project}
+            </span>
+            <strong>{hovered ? projectTitle(hovered) : ""}</strong>
+            <span className="mono text-[0.6rem] opacity-60">
+              {[hovered?.city, hovered?.year].filter(Boolean).join(" · ")}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

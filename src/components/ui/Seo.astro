@@ -1,0 +1,89 @@
+---
+import site from "../../data/site.json";
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: "tr" | "en";
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  trPath?: string;
+  enPath?: string;
+}
+
+const {
+  title,
+  description,
+  lang = "tr",
+  image = "/og-default.jpg",
+  type = "website",
+  noindex = false,
+  jsonLd,
+  trPath,
+  enPath,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL(site.url);
+const pathname = Astro.url.pathname;
+const canonical = new URL(pathname, siteUrl);
+const siteName = lang === "en" ? "Fernas Group" : "Fernas Şirketler Grubu";
+const fullTitle = title.includes("Fernas") ? title : `${title} — ${siteName}`;
+const imageUrl = new URL(image, siteUrl);
+
+const trCanonical =
+  trPath ?? (lang === "en" ? pathname.replace(/^\/en(?=\/|$)/, "") || "/" : pathname);
+const enCanonical = enPath ?? (lang === "en" ? pathname : "/en/");
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  url: site.url,
+  logo: new URL("/favicon.svg", siteUrl).href,
+  foundingDate: String(site.founded),
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: site.phone,
+    contactType: "customer service",
+    areaServed: "TR",
+    availableLanguage: ["tr", "en"],
+  },
+};
+
+const pageLd = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+const structuredData = [organization, ...pageLd];
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical.href} />
+<link rel="alternate" hreflang="tr" href={new URL(trCanonical, siteUrl).href} />
+<link rel="alternate" hreflang="en" href={new URL(enCanonical, siteUrl).href} />
+<link rel="alternate" hreflang="x-default" href={new URL(trCanonical, siteUrl).href} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content={lang === "tr" ? "tr_TR" : "en_US"} />
+<meta property="og:locale:alternate" content={lang === "tr" ? "en_US" : "tr_TR"} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical.href} />
+<meta property="og:image" content={imageUrl.href} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl.href} />
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

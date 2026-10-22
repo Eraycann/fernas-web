@@ -1,0 +1,222 @@
+---
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import Base from "../../layouts/Base.astro";
+import sectors from "../../data/sectors.json";
+import directory from "../../data/sector-pages.json";
+import { loadProjects } from "../../lib/projects";
+
+type SectorPage = {
+  headline: string;
+  intro: string;
+  scope: string[];
+  metric: string;
+  metricLabel: string;
+};
+
+export function getStaticPaths() {
+  return sectors.map((sector) => ({
+    params: { slug: sector.slug },
+    props: { sector },
+  }));
+}
+
+const { sector } = Astro.props;
+const page = (directory as Record<string, SectorPage>)[sector.slug];
+
+const imagePath = `/images/sectors/${sector.slug}.webp`;
+const hasImage = existsSync(join(process.cwd(), "public", "images", "sectors", `${sector.slug}.webp`));
+
+const sectorProjects = loadProjects()
+  .filter((project) => project.sectorSlug === sector.slug)
+  .slice(0, 6);
+
+const others = sectors.filter((item) => item.slug !== sector.slug);
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Ana sayfa",
+      item: "https://www.fernas.com.tr/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: sector.name,
+      item: `https://www.fernas.com.tr/sektorler/${sector.slug}/`,
+    },
+  ],
+};
+---
+
+<Base
+  title={`${sector.name} — Fernas Şirketler Grubu`}
+  description={page.intro}
+  jsonLd={breadcrumbLd}
+>
+  <section class="section">
+    <div class="shell">
+      <nav class="mono flex items-center gap-2 text-[0.64rem] text-steel" aria-label="Breadcrumb">
+        <a class="hover:text-blue" href="/">Ana sayfa</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-ink">{sector.name}</span>
+      </nav>
+
+      <div class="mt-8 grid items-end gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Sektör</p>
+          <h1 class="mt-5 max-w-[13ch] font-display text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+            {sector.name}
+          </h1>
+          <p class="mt-7 max-w-xl text-[1.05rem] leading-relaxed text-ink/70">
+            {page.intro}
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a class="btn btn-primary" href="/projeler/">Projeler</a>
+            <a class="btn btn-ghost" href="/iletisim/">İletişim</a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          {hasImage ? (
+            <figure class="sector-figure">
+              <img
+                src={imagePath}
+                alt={`${sector.name} — Fernas Şirketler Grubu`}
+                width="1600"
+                height="1000"
+                loading="eager"
+                decoding="async"
+              />
+              <figcaption class="mono">FERNAS / {sector.slug.toUpperCase()}</figcaption>
+            </figure>
+          ) : (
+            <div class="sector-placeholder" style={`--sector-tint:${sector.tint}`}>
+              <span class="mono relative z-10 text-[0.62rem] text-white/75">FERNAS / {sector.slug.toUpperCase()}</span>
+              <strong class="relative z-10">{sector.name}</strong>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="measure-band">
+    <div class="shell">
+      <div class="grid gap-6 py-8 sm:grid-cols-[auto_1fr] sm:items-end sm:gap-10">
+        <div>
+          <p class="mono text-[0.64rem] text-white/75">{page.metricLabel.toUpperCase()}</p>
+          <p class="mt-2 font-display text-[clamp(3rem,6vw,6rem)] font-semibold leading-none tracking-[-0.05em]">
+            {page.metric}
+          </p>
+        </div>
+        <p class="max-w-2xl text-[0.95rem] leading-relaxed text-white/80">
+          {page.headline} Fernas'ın ölçülebilir iş yaklaşımı, bu alanda yatırım ve
+          işletme sorumluluğunu birlikte ele alır.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="eyebrow">Kapsam</p>
+        <h2 class="section-title mt-5">Ne yapıyoruz?</h2>
+      </div>
+      <div class="lg:col-span-8">
+        <div class="grid gap-0 border-t border-steel/30 sm:grid-cols-2">
+          {page.scope.map((item) => (
+            <div class="border-b border-steel/30 py-6 sm:odd:pr-8 sm:even:border-l sm:even:pl-8">
+              <p class="font-display text-[1.15rem] font-semibold tracking-[-0.02em]">{item}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Projeler</p>
+          <h2 class="section-title mt-5">Bu sektördeki projeler.</h2>
+        </div>
+        <a class="link-underline" href="/projeler/">Tüm projeler</a>
+      </div>
+
+      {sectorProjects.length > 0 ? (
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {sectorProjects.map((project) => (
+            <a
+              class="group flex flex-col border border-steel/30 bg-white transition-colors hover:border-blue"
+              href={`/projeler/${project.slug}/`}
+            >
+              {project.cover && (
+                <img
+                  src={project.cover}
+                  alt={`${project.title} — Fernas`}
+                  width="800"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                  class="aspect-[16/10] w-full object-cover"
+                />
+              )}
+              <div class="flex flex-1 flex-col p-5">
+                <p class="mono text-[0.62rem] text-steel">
+                  {[project.city, project.year].filter(Boolean).join(" · ")}
+                </p>
+                <h3 class="mt-3 font-display text-[1.2rem] font-semibold leading-[1.1] tracking-[-0.03em] transition-colors group-hover:text-blue">
+                  {project.title}
+                </h3>
+                <span class="mono mt-auto pt-5 text-[0.64rem] text-blue">Projeyi incele →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="border-t border-steel/30 py-8">
+          <p class="max-w-xl text-[0.95rem] leading-relaxed text-ink/65">
+            Bu sektördeki proje kayıtları arşivde tutuluyor. Tüm proje listesinden
+            diğer sektörlere ve sahalara geçebilirsiniz.
+          </p>
+          <a class="link-underline mt-5" href="/projeler/">Proje arşivi</a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell">
+      <p class="eyebrow">Diğer sektörler</p>
+      <div class="mt-6 grid gap-px bg-steel/25 sm:grid-cols-2 lg:grid-cols-5">
+        {others.map((item) => (
+          <a class="group bg-chalk p-5 transition-colors hover:bg-white" href={`/sektorler/${item.slug}/`}>
+            <span class="mono text-[0.6rem] text-steel">{item.metric}</span>
+            <p class="mt-6 font-display text-[1.1rem] font-semibold tracking-[-0.02em] group-hover:text-blue">
+              {item.name}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-blue text-white">
+    <div class="shell flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+      <div>
+        <p class="eyebrow text-white/75">İletişim</p>
+        <h2 class="mt-5 max-w-[15ch] font-display text-[clamp(2rem,3.6vw,3.6rem)] font-semibold leading-[0.94] tracking-[-0.05em]">
+          Bu alanda birlikte çalışalım.
+        </h2>
+      </div>
+      <a class="btn btn-light" href="/iletisim/">İletişime geç</a>
+    </div>
+  </section>
+</Base>

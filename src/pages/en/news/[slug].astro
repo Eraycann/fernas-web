@@ -1,0 +1,173 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { loadNews } from "../../../lib/news";
+
+export function getStaticPaths() {
+  return loadNews().map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const news = loadNews();
+const index = news.findIndex((entry) => entry.slug === item.slug);
+const next = news[(index + 1) % news.length];
+const previous = news[(index - 1 + news.length) % news.length];
+
+const title = item.titleEn || item.title;
+const excerpt = item.excerptEn || item.excerpt;
+const category = item.category === "Genel" ? "General" : item.category;
+
+const formatDate = (value: string) =>
+  value
+    ? new Date(`${value.slice(0, 10)}T12:00:00`).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+
+const bodyHtml = (item.bodyHtmlEn || item.bodyHtml)
+  .replace(/<script[\s\S]*?<\/script>/gi, "")
+  .replace(/<style[\s\S]*?<\/style>/gi, "");
+
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  headline: title,
+  description: excerpt,
+  datePublished: item.publishedAt,
+  dateModified: item.publishedAt,
+  inLanguage: "en-US",
+  image: item.cover ? [`https://www.fernas.com.tr${item.cover}`] : undefined,
+  mainEntityOfPage: `https://www.fernas.com.tr/en/news/${item.slug}/`,
+  publisher: {
+    "@type": "Organization",
+    name: "Fernas Group",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.fernas.com.tr/favicon.svg",
+    },
+  },
+};
+---
+
+<Base
+  title={`${title} — Fernas Group`}
+  description={excerpt || title}
+  image={item.cover || undefined}
+  type="article"
+  jsonLd={articleLd}
+  lang="en"
+  trPath={`/haberler/${item.slug}/`}
+  enPath={`/en/news/${item.slug}/`}
+>
+  <article>
+    <section class="section">
+      <div class="shell">
+        <nav class="mono flex flex-wrap items-center gap-2 text-[0.64rem] text-steel" aria-label="Breadcrumb">
+          <a class="hover:text-blue" href="/en/">Home</a>
+          <span aria-hidden="true">/</span>
+          <a class="hover:text-blue" href="/en/news/">News</a>
+          <span aria-hidden="true">/</span>
+          <span class="text-ink">{title}</span>
+        </nav>
+
+        <div class="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div class="lg:col-span-8">
+            <p class="mono text-[0.64rem] text-steel">
+              {formatDate(item.publishedAt)} · {category}
+            </p>
+            <h1 class="mt-5 max-w-[20ch] font-display text-[clamp(2.2rem,4vw,4rem)] font-semibold leading-[0.94] tracking-[-0.05em]">
+              {title}
+            </h1>
+            {excerpt && (
+              <p class="mt-6 max-w-2xl text-[1.05rem] leading-relaxed text-ink/65">{excerpt}</p>
+            )}
+          </div>
+
+          <div class="lg:col-span-4">
+            {item.cover ? (
+              <figure class="sector-figure">
+                <img
+                  src={item.cover}
+                  alt={title}
+                  width="1600"
+                  height="1000"
+                  loading="eager"
+                  decoding="async"
+                />
+                <figcaption class="mono">FERNAS / NEWS</figcaption>
+              </figure>
+            ) : (
+              <div class="sector-placeholder" style="--sector-tint:#045091">
+                <span class="mono relative z-10 text-[0.62rem] text-white/75">FERNAS / NEWS</span>
+                <strong class="relative z-10">{category}</strong>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rule">
+      <div class="shell grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-8">
+          {bodyHtml ? (
+            <div class="prose-fernas" set:html={bodyHtml} />
+          ) : (
+            <p class="max-w-xl text-[0.98rem] leading-relaxed text-ink/70">
+              The text of this article is held in the archive. Use the contact
+              form for more information.
+            </p>
+          )}
+
+          {item.sourceUrl && (
+            <p class="mono mt-10 text-[0.62rem] leading-relaxed text-steel">
+              Source:{" "}
+              <a
+                class="underline decoration-steel/40 underline-offset-2 hover:text-blue"
+                href={item.sourceUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                fernas.com.tr
+              </a>
+            </p>
+          )}
+        </div>
+
+        <aside class="lg:col-span-4">
+          <div class="sticky top-24 border border-steel/30 p-5">
+            <p class="mono text-[0.62rem] text-steel">ARTICLE</p>
+            <p class="mt-4 font-display text-[1.3rem] font-semibold leading-[1.05] tracking-[-0.03em]">
+              {category}
+            </p>
+            <p class="mt-2 text-[0.85rem] text-ink/60">{formatDate(item.publishedAt)}</p>
+            <div class="mt-6 border-t border-steel/30 pt-4">
+              <a class="link-underline" href="/en/news/">All news</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </article>
+
+  <section class="section bg-white">
+    <div class="shell grid gap-6 sm:grid-cols-2">
+      <a class="group border border-steel/30 p-6 transition-colors hover:border-blue" href={`/en/news/${previous.slug}/`}>
+        <p class="mono text-[0.62rem] text-steel">PREVIOUS</p>
+        <p class="mt-4 font-display text-[1.35rem] font-semibold leading-[1.08] tracking-[-0.03em] group-hover:text-blue">
+          {previous.titleEn || previous.title}
+        </p>
+      </a>
+      <a class="group border border-steel/30 p-6 text-right transition-colors hover:border-blue" href={`/en/news/${next.slug}/`}>
+        <p class="mono text-[0.62rem] text-steel">NEXT</p>
+        <p class="mt-4 font-display text-[1.35rem] font-semibold leading-[1.08] tracking-[-0.03em] group-hover:text-blue">
+          {next.titleEn || next.title}
+        </p>
+      </a>
+    </div>
+  </section>
+</Base>

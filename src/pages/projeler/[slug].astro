@@ -1,0 +1,215 @@
+---
+import Base from "../../layouts/Base.astro";
+import { loadProjects } from "../../lib/projects";
+
+export function getStaticPaths() {
+  return loadProjects().map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+const statusLabels: Record<string, string> = {
+  tamamlandi: "Tamamlandı",
+  "devam-ediyor": "Devam ediyor",
+  isletmede: "İşletmede",
+  planlama: "Planlama",
+};
+
+const status = statusLabels[project.status] ?? project.status;
+const bodyHtml = project.bodyHtml
+  .replace(/<script[\s\S]*?<\/script>/gi, "")
+  .replace(/<style[\s\S]*?<\/style>/gi, "");
+
+const facts = [
+  ["Sektör", project.sector],
+  ["Şehir", project.city],
+  ["Ülke", project.country],
+  ["Yıl", project.year],
+  ["Kapasite", project.capacity],
+  ["İşveren", project.client],
+  ["Durum", status],
+].filter(([, value]) => Boolean(value));
+
+const all = loadProjects();
+const currentIndex = all.findIndex((item) => item.slug === project.slug);
+const next = all[(currentIndex + 1) % all.length];
+const previous = all[(currentIndex - 1 + all.length) % all.length];
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Ana sayfa",
+      item: "https://www.fernas.com.tr/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projeler",
+      item: "https://www.fernas.com.tr/projeler/",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: project.title,
+      item: `https://www.fernas.com.tr/projeler/${project.slug}/`,
+    },
+  ],
+};
+---
+
+<Base
+  title={`${project.title} — Fernas Şirketler Grubu`}
+  description={`${project.title}. ${[project.sector, project.city, project.year].filter(Boolean).join(" · ")}.`}
+  image={project.cover || undefined}
+  jsonLd={breadcrumbLd}
+>
+  <section class="section">
+    <div class="shell">
+      <nav class="mono flex flex-wrap items-center gap-2 text-[0.64rem] text-steel" aria-label="Breadcrumb">
+        <a class="hover:text-blue" href="/">Ana sayfa</a>
+        <span aria-hidden="true">/</span>
+        <a class="hover:text-blue" href="/projeler/">Projeler</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-ink">{project.title}</span>
+      </nav>
+
+      <div class="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-7">
+          <p class="eyebrow">{[project.sector, status].filter(Boolean).join(" · ")}</p>
+          <h1 class="mt-5 max-w-[16ch] font-display text-[clamp(2.4rem,4.4vw,4.6rem)] font-semibold leading-[0.9] tracking-[-0.055em]">
+            {project.title}
+          </h1>
+          <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[0.68rem] text-steel">
+            {project.city && <span>{project.city}</span>}
+            {project.country && <span>{project.country}</span>}
+            {project.year && <span>{project.year}</span>}
+            {project.capacity && <span>{project.capacity}</span>}
+          </div>
+        </div>
+
+        <div class="lg:col-span-5">
+          {project.cover ? (
+            <figure class="sector-figure">
+              <img
+                src={project.cover}
+                alt={project.alt}
+                width="1600"
+                height="1000"
+                loading="eager"
+                decoding="async"
+              />
+              <figcaption class="mono">FERNAS / PROJE</figcaption>
+            </figure>
+          ) : (
+            <div class="sector-placeholder" style="--sector-tint:#045091">
+              <span class="mono relative z-10 text-[0.62rem] text-white/75">FERNAS / PROJE</span>
+              <strong class="relative z-10">{project.title}</strong>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-8">
+        {bodyHtml ? (
+          <div class="prose-fernas" set:html={bodyHtml} />
+        ) : project.scope ? (
+          <div>
+            <p class="eyebrow">Kapsam</p>
+            <p class="mt-4 max-w-2xl text-[1.05rem] leading-relaxed text-ink/75">{project.scope}</p>
+          </div>
+        ) : (
+          <div class="border-l-2 border-amber pl-5">
+            <p class="text-[0.98rem] leading-relaxed text-ink/70">
+              Bu proje kaydı arşivde tutuluyor. Kapsam, saha ve teknik bilgiler
+              için iletişim formunu kullanabilirsiniz.
+            </p>
+            <a class="link-underline mt-4" href="/iletisim/">Bilgi talep et</a>
+          </div>
+        )}
+
+        {project.gallery.length > 0 && (
+          <div class="mt-12">
+            <p class="eyebrow">Galeri</p>
+            <div class="mt-5 grid gap-1 sm:grid-cols-2">
+              {project.gallery.map((image, index) => (
+                <figure class="overflow-hidden bg-ink">
+                  <img
+                    src={image}
+                    alt={`${project.title} — görsel ${index + 1}`}
+                    width="1200"
+                    height="800"
+                    loading="lazy"
+                    decoding="async"
+                    class="aspect-[4/3] w-full object-cover"
+                  />
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <aside class="lg:col-span-4">
+        <div class="sticky top-24 border border-steel/30">
+          <div class="border-b border-steel/30 p-5">
+            <p class="mono text-[0.62rem] text-steel">KÜNYE</p>
+          </div>
+          <dl>
+            {facts.map(([label, value]) => (
+              <div class="grid grid-cols-[6.5rem_1fr] gap-3 border-b border-steel/20 px-5 py-3 last:border-b-0">
+                <dt class="mono text-[0.62rem] text-steel">{label}</dt>
+                <dd class="text-[0.86rem] leading-relaxed">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div class="mt-6 border border-steel/30 p-5">
+          <p class="mono text-[0.62rem] text-steel">PAYLAŞ</p>
+          <div class="mt-3 flex flex-wrap gap-3 text-[0.8rem]">
+            <a class="link-underline" href={`mailto:?subject=${encodeURIComponent(project.title)}&body=${encodeURIComponent(`https://www.fernas.com.tr/projeler/${project.slug}/`)}`}>
+              E-posta
+            </a>
+            <a class="link-underline" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://www.fernas.com.tr/projeler/${project.slug}/`)}`} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+          </div>
+        </div>
+
+        {project.sourceUrl && (
+          <p class="mono mt-4 text-[0.6rem] leading-relaxed text-steel">
+            Kaynak: <a class="underline decoration-steel/40 underline-offset-2 hover:text-blue" href={project.sourceUrl} target="_blank" rel="noreferrer">fernas.com.tr</a>
+          </p>
+        )}
+      </aside>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="shell grid gap-6 sm:grid-cols-2">
+      <a class="group border border-steel/30 p-6 transition-colors hover:border-blue" href={`/projeler/${previous.slug}/`}>
+        <p class="mono text-[0.62rem] text-steel">ÖNCEKİ</p>
+        <p class="mt-4 font-display text-[1.45rem] font-semibold leading-[1.05] tracking-[-0.03em] group-hover:text-blue">
+          {previous.title}
+        </p>
+      </a>
+      <a class="group border border-steel/30 p-6 text-right transition-colors hover:border-blue" href={`/projeler/${next.slug}/`}>
+        <p class="mono text-[0.62rem] text-steel">SONRAKİ</p>
+        <p class="mt-4 font-display text-[1.45rem] font-semibold leading-[1.05] tracking-[-0.03em] group-hover:text-blue">
+          {next.title}
+        </p>
+      </a>
+    </div>
+  </section>
+</Base>

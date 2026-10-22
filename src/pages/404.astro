@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Sayfa bulunamadı"
+  description="Aradığınız sayfa taşınmış veya kaldırılmış olabilir."
+  noindex
+>
+  <section class="section">
+    <div class="shell grid gap-10 py-10 lg:grid-cols-12 lg:py-20">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">404</p>
+        <h1 class="mt-5 font-display text-[clamp(3.5rem,8vw,8rem)] font-semibold leading-[0.8] tracking-[-0.07em] text-blue">
+          404
+        </h1>
+        <p class="mt-8 max-w-lg text-[1.05rem] leading-relaxed text-ink/70">
+          Aradığınız sayfa taşınmış, adı değişmiş veya kaldırılmış olabilir.
+          Aşağıdaki bağlantılardan devam edebilirsiniz.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="/">Ana sayfa</a>
+          <a class="btn btn-ghost" href="/projeler/">Projeler</a>
+          <a class="btn btn-ghost" href="/iletisim/">İletişim</a>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="blueprint-grid border border-steel/30 p-6">
+          <p class="mono text-[0.62rem] text-steel">HIZLI ERİŞİM</p>
+          <div class="mt-5 flex flex-col">
+            {[
+              ["Sektörler", "/#sektorler"],
+              ["Hakkımızda", "/grup/hakkimizda/"],
+              ["Haberler", "/haberler/"],
+              ["Kariyer", "/kariyer/"],
+              ["Politikalar", "/grup/politikalar/"],
+            ].map(([label, href]) => (
+              <a class="flex items-center justify-between border-b border-steel/25 py-3 text-[0.92rem]" href={href}>
+                <span>{label}</span>
+                <span class="text-blue" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

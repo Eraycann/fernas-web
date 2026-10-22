@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "sinop-ayancik-devlet-yolu",
+    "title": "Sinop-Ayancık Devlet Yolu",
+    "sector": "İnşaat",
+    "location": "Sinop",
+    "year": "2018",
+    "scale": "10 km",
+    "image": ""
+  },
+  {
+    "slug": "corum-incesu-hidroelektrik-santrali",
+    "title": "Çorum İncesu Hidroelektrik Santrali",
+    "sector": "Enerji",
+    "location": "Çorum",
+    "year": "2018",
+    "scale": "15 MW",
+    "image": ""
+  },
+  {
+    "slug": "balikesir-samli-ruzgar-santrali",
+    "title": "Balıkesir Şamlı Rüzgâr Santrali",
+    "sector": "Enerji",
+    "location": "Balıkesir",
+    "year": "2018",
+    "scale": "RES",
+    "image": ""
+  },
+  {
+    "slug": "hatay-sebenoba-ruzgar-santrali",
+    "title": "Hatay Sebenoba Rüzgâr Santrali",
+    "sector": "Enerji",
+    "location": "Hatay",
+    "year": "2018",
+    "scale": "RES",
+    "image": ""
+  },
+  {
+    "slug": "kapidag-ruzgar-santrali",
+    "title": "Kapıdağ Rüzgâr Santrali",
+    "sector": "Enerji",
+    "location": "Balıkesir",
+    "year": "2018",
+    "scale": "RES",
+    "image": ""
+  },
+  {
+    "slug": "mesaieed-sivilastirilmis-dogalgaz-tesisi",
+    "title": "Mesaieed Sıvılaştırılmış Doğalgaz Tesisi",
+    "sector": "Doğalgaz",
+    "location": "Katar",
+    "year": "2018",
+    "scale": "LNG",
+    "image": ""
+  }
+]

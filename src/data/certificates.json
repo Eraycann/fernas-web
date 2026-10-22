@@ -1,0 +1,50 @@
+[
+  {
+    "title": "ISO 9001 DAKKS ENG",
+    "image": "/images/certificates/iso-9001-dakks-eng.webp",
+    "width": 1400,
+    "height": 1980
+  },
+  {
+    "title": "ISO 9001 DAKKS TUR",
+    "image": "/images/certificates/iso-9001-dakks-tur.webp",
+    "width": 1400,
+    "height": 1980
+  },
+  {
+    "title": "ISO 9001 TURKAK ENG",
+    "image": "/images/certificates/iso-9001-turkak-eng.webp",
+    "width": 1400,
+    "height": 1979
+  },
+  {
+    "title": "ISO 9001 TURKAK TUR",
+    "image": "/images/certificates/iso-9001-turkak-tur.webp",
+    "width": 1400,
+    "height": 1980
+  },
+  {
+    "title": "ISO 14001 DAKKS ENG",
+    "image": "/images/certificates/iso-14001-dakks-eng.webp",
+    "width": 1400,
+    "height": 1980
+  },
+  {
+    "title": "ISO 14001 DAKKS TUR",
+    "image": "/images/certificates/iso-14001-dakks-tur.webp",
+    "width": 1400,
+    "height": 1980
+  },
+  {
+    "title": "ISO 45001 DAKKS ENG",
+    "image": "/images/certificates/iso-45001-dakks-eng.webp",
+    "width": 1400,
+    "height": 1979
+  },
+  {
+    "title": "ISO 45001 DAKKS TUR",
+    "image": "/images/certificates/iso-45001-dakks-tur.webp",
+    "width": 1400,
+    "height": 1980
+  }
+]

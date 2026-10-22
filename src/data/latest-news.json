@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "sinop-ayancik-devlet-yolu",
+    "title": "Sinop-Ayancık Devlet Yolu",
+    "date": "2018-02-08",
+    "excerpt": "Ayancık-Sinop arasındaki yolun yaklaşık 10 kilometrelik kısmının yapım ihalesi alındı.",
+    "category": "İnşaat"
+  },
+  {
+    "slug": "corum-incesu-hidroelektrik-santrali-anlasmasi",
+    "title": "Çorum İncesu Hidroelektrik Santrali Anlaşması",
+    "date": "2018-01-26",
+    "excerpt": "AKSA Enerji ile yapılan anlaşmayla 15 MW kurulu güce sahip İncesu HES gruba dahil edildi.",
+    "category": "Enerji"
+  },
+  {
+    "slug": "balikesir-samli-ruzgar-santrali-anlasmasi",
+    "title": "Balıkesir Şamlı Rüzgâr Santrali Anlaşması",
+    "date": "2018-01-03",
+    "excerpt": "AKSA Enerji ile yapılan anlaşmayla Şamlı Rüzgâr Enerji Santrali gruba dahil edildi.",
+    "category": "Enerji"
+  }
+]

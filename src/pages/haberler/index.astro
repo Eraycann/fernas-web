@@ -1,0 +1,105 @@
+---
+import Base from "../../layouts/Base.astro";
+import { loadNews } from "../../lib/news";
+
+const news = loadNews();
+const [lead, ...rest] = news;
+
+const formatDate = (value: string) =>
+  value
+    ? new Date(`${value.slice(0, 10)}T12:00:00`).toLocaleDateString("tr-TR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+---
+
+<Base
+  title="Haberler — Fernas Şirketler Grubu"
+  description="Fernas Şirketler Grubu haber arşivi: projeler, enerji yatırımları, doğalgaz dağıtımı ve grup faaliyetleri."
+>
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Haberler</p>
+        <h1 class="mt-5 max-w-[12ch] font-display text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+          Haberler.
+        </h1>
+      </div>
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="section-lede">
+          Proje anlaşmaları, enerji yatırımları ve grup faaliyetleri. Haber
+          arşivi, Fernas'ın sahadaki hareketlerini kayıt altında tutuyor.
+        </p>
+        <p class="mono mt-6 text-[0.64rem] text-steel">{news.length} haber</p>
+      </div>
+    </div>
+  </section>
+
+  {lead && (
+    <section class="section rule">
+      <div class="shell">
+        <a class="group grid gap-8 lg:grid-cols-12 lg:gap-16" href={`/haberler/${lead.slug}/`}>
+          <div class="lg:col-span-7">
+            {lead.cover ? (
+              <figure class="overflow-hidden bg-ink">
+                <img
+                  src={lead.cover}
+                  alt={lead.title}
+                  width="1600"
+                  height="1000"
+                  loading="eager"
+                  decoding="async"
+                  class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                />
+              </figure>
+            ) : (
+              <div class="sector-placeholder" style="--sector-tint:#045091">
+                <span class="mono relative z-10 text-[0.62rem] text-white/75">FERNAS / HABER</span>
+                <strong class="relative z-10">{lead.title}</strong>
+              </div>
+            )}
+          </div>
+          <div class="flex flex-col justify-between lg:col-span-5">
+            <div>
+              <p class="mono text-[0.64rem] text-steel">
+                {formatDate(lead.publishedAt)} · {lead.category}
+              </p>
+              <h2 class="mt-5 max-w-[18ch] font-display text-[clamp(1.8rem,3.4vw,3.2rem)] font-semibold leading-[1.02] tracking-[-0.04em] group-hover:text-blue">
+                {lead.title}
+              </h2>
+              <p class="mt-5 max-w-xl text-[0.95rem] leading-relaxed text-ink/65">{lead.excerpt}</p>
+            </div>
+            <span class="link-underline mt-8 self-start">Haberi oku</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="shell">
+      <div class="border-t border-steel/30">
+        {rest.map((item) => (
+          <a
+            class="group grid gap-3 border-b border-steel/30 py-6 sm:grid-cols-[9rem_1fr_10rem_2rem] sm:items-center sm:gap-8"
+            href={`/haberler/${item.slug}/`}
+          >
+            <span class="mono text-[0.64rem] text-steel">{formatDate(item.publishedAt)}</span>
+            <div>
+              <h3 class="font-display text-[1.3rem] font-semibold leading-[1.1] tracking-[-0.03em] group-hover:text-blue">
+                {item.title}
+              </h3>
+              {item.excerpt && (
+                <p class="mt-2 max-w-2xl text-[0.88rem] leading-relaxed text-ink/70">{item.excerpt}</p>
+              )}
+            </div>
+            <span class="mono text-[0.62rem] text-steel">{item.category}</span>
+            <span class="hidden text-blue sm:block" aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

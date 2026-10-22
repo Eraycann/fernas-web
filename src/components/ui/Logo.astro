@@ -1,0 +1,75 @@
+---
+interface Props {
+  class?: string;
+  variant?: "dark" | "light";
+  href?: string;
+}
+
+const { class: className = "", variant = "dark", href = "/" } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={["logo", variant === "light" && "logo--light", className]}
+>
+  <svg
+    class="logo-mark"
+    width="30"
+    height="30"
+    viewBox="0 0 30 30"
+    fill="none"
+    aria-hidden="true"
+  >
+    <rect x="0" y="11" width="3.2" height="19" fill="currentColor" />
+    <rect x="5.4" y="7" width="3.2" height="23" fill="currentColor" />
+    <rect x="10.8" y="3" width="3.2" height="27" fill="currentColor" />
+    <rect x="16.2" y="6" width="3.2" height="24" fill="currentColor" />
+    <rect x="21.6" y="9" width="3.2" height="21" fill="currentColor" />
+    <rect x="27" y="13" width="3.2" height="17" fill="currentColor" />
+  </svg>
+  <span class="logo-type">
+    <strong>FERNAS</strong>
+    <small>ŞİRKETLER GRUBU</small>
+  </span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--color-blue);
+    line-height: 1;
+  }
+
+  .logo--light {
+    color: var(--color-white);
+  }
+
+  .logo-mark {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .logo-type {
+    display: flex;
+    flex-direction: column;
+    gap: 0.22rem;
+  }
+
+  .logo-type strong {
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+  }
+
+  .logo-type small {
+    font-family: var(--font-mono);
+    font-size: 0.43rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: color-mix(in srgb, currentColor 85%, transparent);
+  }
+</style>

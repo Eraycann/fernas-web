@@ -1,0 +1,87 @@
+---
+import Base from "../../layouts/Base.astro";
+import certificates from "../../data/certificates.json";
+---
+
+<Base
+  title="Kalite Belgeleri — Fernas Şirketler Grubu"
+  description="Fernas Şirketler Grubu kalite belgeleri: ISO 9001, ISO 14001 ve ISO 45001 yönetim sistemleri."
+>
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Kurumsal</p>
+        <h1 class="mt-5 max-w-[14ch] font-display text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+          Kalite belgeleri.
+        </h1>
+      </div>
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="section-lede">
+          Grup şirketlerindeki tüm süreçlerde ulusal ve uluslararası ürün
+          standartları, ISO yönetim sistemleri, yasal gereklilikler ve müşteri
+          özel istekleri esas alınıyor.
+        </p>
+        <p class="mono mt-6 text-[0.64rem] text-steel">{certificates.length} belge</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section rule">
+    <div class="shell">
+      <div class="grid gap-8 border-t border-steel/30 pt-8 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-4">
+          <p class="eyebrow">Yönetim sistemleri</p>
+          <h2 class="section-title mt-5">Ölçü, çevre ve güvenlik.</h2>
+          <p class="mt-6 max-w-md text-[0.92rem] leading-relaxed text-ink/65">
+            ISO 9001:2015 Kalite Yönetim Sistemi, ISO 14001:2015 Çevre Yönetim
+            Sistemi ve ISO 45001 İş Sağlığı ve Güvenliği Yönetim Sistemi
+            belgeleri; Türkçe ve İngilizce nüshalarıyla birlikte yayımlanıyor.
+          </p>
+        </div>
+
+        <div class="lg:col-span-8">
+          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {certificates.map((certificate) => (
+              <a
+                class="group flex flex-col border border-steel/30 bg-white p-4 transition-colors hover:border-blue hover:bg-chalk"
+                href={certificate.image}
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="flex aspect-[3/4] items-center justify-center overflow-hidden bg-chalk">
+                  <img
+                    src={certificate.image}
+                    alt={`${certificate.title} kalite belgesi`}
+                    width={certificate.width}
+                    height={certificate.height}
+                    loading="lazy"
+                    decoding="async"
+                    class="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-2">
+                  <span class="mono text-[0.62rem] leading-relaxed text-ink/70">
+                    {certificate.title}
+                  </span>
+                  <span class="text-[0.9rem] text-blue" aria-hidden="true">↗</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink text-white">
+    <div class="shell flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+      <div>
+        <p class="eyebrow text-white/75">Belgeler</p>
+        <h2 class="mt-5 max-w-[16ch] font-display text-[clamp(2rem,3.6vw,3.6rem)] font-semibold leading-[0.94] tracking-[-0.05em]">
+          Belgeyi açın, künyeyi görün.
+        </h2>
+      </div>
+      <a class="btn btn-light" href="/iletisim/">Bilgi talep et</a>
+    </div>
+  </section>
+</Base>

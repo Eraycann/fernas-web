@@ -1,0 +1,129 @@
+---
+import Base from "../../layouts/Base.astro";
+import sectors from "../../data/sectors.json";
+import stats from "../../data/stats.json";
+---
+
+<Base
+  title="Hakkımızda — Fernas Şirketler Grubu"
+  description="1982'de Ankara'da kurulan Fernas Şirketler Grubu; inşaat, enerji, doğalgaz dağıtımı, sanayi, gıda ve turizm alanlarında faaliyet gösteriyor."
+>
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Hakkımızda</p>
+        <h1 class="mt-5 max-w-[14ch] font-display text-[clamp(2.8rem,5vw,5rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+          Fernas Şirketler Grubu.
+        </h1>
+      </div>
+      <div class="lg:col-span-5 lg:pt-16">
+        <p class="section-lede">
+          Fernas Şirketler Grubu, Ankara merkezli bir grup. İnşaat ve taahhüt
+          işleriyle başlayan faaliyetler; enerji, doğalgaz dağıtımı, sanayi,
+          gıda ve turizm alanlarına yayıldı.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="/grup/tarihce/">Tarihçe</a>
+          <a class="btn btn-ghost" href="/projeler/">Projeler</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="measure-band">
+    <div class="shell">
+      <div class="measure-grid">
+        {stats.map((stat) => (
+          <div class="measure-item">
+            <strong>
+              {stat.value}
+              {stat.unit && <span>{stat.unit}</span>}
+            </strong>
+            <small>{stat.label}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="eyebrow">Grup</p>
+        <h2 class="section-title mt-5">Faaliyet alanlarımız.</h2>
+        <p class="mt-6 max-w-md text-[0.98rem] leading-relaxed text-ink/65">
+          Her sektör kendi mühendisliğini ve işletme ritmini taşır. Grubun
+          ortak çizgisi; yatırımı kurmak, işletmek ve uzun vadede ayakta tutmak.
+        </p>
+      </div>
+      <div class="lg:col-span-8">
+        <div class="grid gap-0 border-t border-steel/30">
+          {sectors.map((sector) => (
+            <a
+              class="group grid grid-cols-[1fr_auto] items-center gap-4 border-b border-steel/30 py-5 transition-colors hover:bg-white"
+              href={`/sektorler/${sector.slug}/`}
+            >
+              <span>
+                <span class="block font-display text-[1.25rem] font-semibold tracking-[-0.03em] group-hover:text-blue">
+                  {sector.name}
+                </span>
+                <span class="mt-1 block text-[0.85rem] text-ink/70">{sector.short}</span>
+              </span>
+              <span class="mono text-[0.62rem] text-steel">{sector.metric}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink text-white">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <p class="eyebrow text-white/75">Çalışma biçimi</p>
+        <h2 class="section-title mt-5 text-white">İş, teslimden sonra başlar.</h2>
+      </div>
+      <div class="lg:col-span-7">
+        <p class="text-[1.02rem] leading-relaxed text-white/70">
+          Bir tesisin açılışı, işin sonu değil; işletme döneminin başlangıcı.
+          Fernas için proje; ölçü, saha, devreye alma ve işletme adımlarının
+          tamamını kapsar.
+        </p>
+        <div class="mt-10 grid gap-5 sm:grid-cols-3">
+          {[
+            ["Uzun vadeli bakış", "Yatırımı kurmak kadar işletmek de grubun işi."],
+            ["Mühendislik disiplini", "Her proje ölçü, saha ve devreye alma ile kapanır."],
+            ["İşletme sorumluluğu", "Tesisler, kuruldukları bölgede uzun yıllar çalışır."],
+          ].map(([title, body]) => (
+            <div class="border border-white/20 p-5">
+              <h3 class="font-display text-[1.05rem] font-semibold tracking-[-0.02em]">{title}</h3>
+              <p class="mt-3 text-[0.86rem] leading-relaxed text-white/80">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-6">
+        <p class="eyebrow">Merkez</p>
+        <h2 class="section-title mt-5">Ankara'dan yönetilen bir saha ağı.</h2>
+      </div>
+      <div class="lg:col-span-6">
+        <p class="section-lede">
+          Grup merkezi Ankara, Çankaya'da. Doğalgaz dağıtımı Diyarbakır'da;
+          üretim tesisleri Aksaray, Ankara ve Batman'da; turizm işletmesi
+          Bodrum'da. Projeler Türkiye'nin farklı bölgelerine ve yurt dışına
+          yayılıyor.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a class="link-underline" href="/iletisim/">Merkez ofis</a>
+          <a class="link-underline" href="/grup/uyelikler/">Üyelikler</a>
+          <a class="link-underline" href="/surdurulebilirlik/">Sürdürülebilirlik</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+playwright-report/
+test-results/
+*.zip
+data/raw/
+screenshots/
+.playwright-mcp/
+.vercel/
+*.log
