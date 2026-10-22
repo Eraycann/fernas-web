@@ -206,7 +206,7 @@ Geri kalan her şey Astro bileşeni; JS yok.
   - Güvenlik başlıkları
   - `Options -MultiViews`
 - Demo alt dizin desteği: `BASE_PATH` şu an uygulanmadı; alt dizin gerekirse `astro.config.ts` içinde `base` eklenmeli.
-- `npm run package` → `fernas-site.zip`.
+- `npm run package` → `release/fernas-cpanel-YYYY-MM-DD.zip`.
 
 ## 7. PHP + MySQL'e Geçiş Yolu
 

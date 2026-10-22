@@ -145,7 +145,7 @@ Node 22.23.4+ gerekir. Proje npm kullanır; pnpm/yarn karıştırılmaz.
 3. **İngilizce eksikleri:** 4 proje ve 10 sayfa EN içeriksiz. Uydurma çeviri yapılmamalı.
 4. **Hukuki EN:** İngilizce politika/KVKK kaynak metni yok; EN sayfalar Türkçe PDF'lere gidiyor.
 5. **Form testi:** PHP lokalde yok. cPanel'de gerçek gönderim, ek dosya ve 301'ler test edilmeli.
-6. **cPanel paketi:** Son tasarımdan sonra yeniden üretilmeli.
+6. **cPanel paketi:** `release/fernas-cpanel-2026-10-22.zip` güncel tasarımla üretildi; cPanel'de yükleme, form ve 301 testi bekliyor.
 7. **Lighthouse:** Vercel mobilde Perf 97 / A11y 100 / BP 100 / SEO 69 (noindex); LCP 2,5 s. 2,0 s hedefi için hero teslimi iyileştirilmeli.
 
 ### İçerik kalitesi
@@ -173,7 +173,7 @@ Node 22.23.4+ gerekir. Proje npm kullanır; pnpm/yarn karıştırılmaz.
 5. Yüksek çözünürlüklü görselleri temin et; düşük çözünürlüklü olanları değiştir.
 6. Video ve gelişmiş animasyonları **ölçülü** ekle (aşağıdaki kurallar).
 7. cPanel'de form, 404, 301 ve cache doğrulaması yap.
-8. Son cPanel paketini üret.
+8. cPanel'de paketi yükle; form, 404, 301 ve cache doğrulaması yap.
 
 ## 9. Video ve animasyon eklerken
 

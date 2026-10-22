@@ -37,7 +37,7 @@ Kurumsal sadeleştirme, görsel yenileme ve yayın altyapısı tamamlandı. Site
 - `npm run build`: **268 sayfa**; Pagefind **266 sayfa** indeksledi.
 - Playwright + axe (`npm run qa`): **54 sayfa/genişlik kombinasyonu, 0 sorun** (Vercel production alias üzerinde de doğrulandı).
 - `npm run validate:content`: hata yok, 10 uyarı (4 projede İngilizce eksik, iletişim e-postası boş, iki farklı telefon).
-- Önceki cPanel paketi: `release/fernas-cpanel-2026-10-22.zip` — **26.17 MB**, 129 adet 301. **Yeni tasarım sonrası paket yeniden üretilmeli.**
+- cPanel paketi: `release/fernas-cpanel-2026-10-22.zip` — **26.17 MB**, 129 adet 301. Güncel tasarımla üretildi; cPanel'de yükleme ve form testi bekliyor.
 - Lighthouse son hâl için çalıştırıldı: Vercel mobilde Perf 97, A11y 100, BP 100, SEO 69 (önizleme `noindex`). LCP 2,5 s; 2,0 s hedefi açık. CLS 0, TBT 30 ms.
 
 ## Önizleme
@@ -67,7 +67,7 @@ Kurumsal sadeleştirme, görsel yenileme ve yayın altyapısı tamamlandı. Site
 4. İngilizce eksik 4 proje ve 10 sayfayı tamamla veya dil bağlantısını koşullu yap.
 5. Yüksek çözünürlüklü görselleri temin et.
 6. cPanel'de zip'i açıp `.htaccess` 301'lerini, 404'ü ve formları doğrula.
-7. Son cPanel paketini üret.
+7. cPanel'de paketi yükle; form, 404, 301 ve cache doğrulaması yap.
 
 ## Hızlı komutlar
 
