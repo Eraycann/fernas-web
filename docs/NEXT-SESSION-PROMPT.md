@@ -43,6 +43,7 @@ Kurumsal havayı koru: süslü sayfa geçişi, hover arkasında fotoğraf, gerek
 
 ## Vercel önizlemesi
 
-- Deployment sonrası URL: `docs/STATUS.md` içinde.
+- Canlı URL: <https://fernas-web.vercel.app>
+- GitHub: <https://github.com/Eraycann/fernas-web>
 - Formlar Vercel'de demo modundadır; gerçek gönderim yapılmaz.
 - Önizleme `noindex`; arama motorlarına açık değildir.

@@ -3,6 +3,8 @@
 Fernas Şirketler Grubu için yeniden tasarlanmış, iki dilli (TR/EN), statik kurumsal web sitesi. Üretim çıktısı cPanel'e yüklenir; Vercel yalnızca önizleme ve paylaşım içindir.
 
 - Görsel referans: <https://masis-six.vercel.app/index.html>
+- Canlı önizleme: <https://fernas-web.vercel.app>
+- GitHub: <https://github.com/Eraycann/fernas-web>
 - Kurumsal kaynak: <https://www.fernas.com.tr/>
 - Marka mavisi: `#045091`
 - Çıktı: `dist/` — Node, veritabanı veya CMS gerektirmez
@@ -134,7 +136,7 @@ Repo Vercel'e bağlanabilir. Ayarlar:
 - Output directory: `dist`
 - Node: `.nvmrc` → 24
 
-Vercel PHP çalıştıramaz. Formlar `.vercel.app` alan adında otomatik demo moduna geçer; gerçek e-posta gönderilmez.
+Vercel PHP çalıştıramaz. Vercel projesinde `PUBLIC_DEMO_MODE=true` tanımlıdır; formlar demo modundadır ve gerçek e-posta göndermez.
 
 ### cPanel (üretim)
 

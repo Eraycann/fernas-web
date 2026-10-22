@@ -77,7 +77,7 @@ Kullanıcının son yönü:
 - Türkiye haritası, pinlenmiş yatay tarihçe, hover ile fotoğraf açma ve süslü sayfa geçişi kaldırıldı.
 - `ClientRouter` ve eski `blueprint-wipe` CSS'i tamamen silindi.
 - Chalk zemini `#F2F4F5`; gövde metni `ink` tonlarında.
-- Vercel'de formlar otomatik demo moduna geçer (`src/lib/demo.ts`).
+- Vercel'de formlar `PUBLIC_DEMO_MODE=true` ile demo modundadır (`src/lib/demo.ts`).
 
 ## 5. Mimari
 
@@ -193,8 +193,8 @@ Kurumsal havayı bozmamak için:
 
 ```text
 Fernas Şirketler Grubu'nun statik kurumsal sitesini devralıyorsun.
-Repo: <GitHub URL>
-Önizleme: <Vercel URL>
+Repo: https://github.com/Eraycann/fernas-web
+Önizleme: https://fernas-web.vercel.app
 
 Önce şu sırayla oku:
 1. docs/AI-HANDOFF.md

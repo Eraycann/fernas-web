@@ -2,7 +2,7 @@
 
 ## 1. Dış referans
 
-- **MASİS kurumsal site:** <https://masis-six.vercel.app/index.html>
+- **Canlı önizleme:** <https://fernas-web.vercel.app>\n- **GitHub:** <https://github.com/Eraycann/fernas-web>\n- **MASİS kurumsal site:** <https://masis-six.vercel.app/index.html>
 - **Fernas mevcut site:** <https://www.fernas.com.tr/>
 - **Yerel önizleme:** `http://localhost:4322/` (preview portu değişebilir)
 

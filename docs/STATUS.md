@@ -17,7 +17,7 @@ Kurumsal sadeleştirme, görsel yenileme ve yayın altyapısı tamamlandı. Site
 ## Yayın altyapısı
 
 - GitHub: `https://github.com/Eraycann/fernas-web` (public)
-- Vercel: repoya bağlı önizleme; adres deployment sonrası buraya yazılacak.
+- Vercel: `https://fernas-web.vercel.app` (production alias, public; `noindex`)
 - CI: `.github/workflows/ci.yml` — `npm ci`, `check`, `validate:content`, `build`.
 - Vercel ayarları: `vercel.json`, `.vercelignore`, `.nvmrc`.
 - Üretim hedefi: cPanel `public_html`. Vercel yalnızca önizleme; PHP ve `.htaccess` orada çalışmaz.
@@ -35,7 +35,7 @@ Kurumsal sadeleştirme, görsel yenileme ve yayın altyapısı tamamlandı. Site
 
 - `npm run check`: **0 hata, 0 uyarı** (10 hint).
 - `npm run build`: **268 sayfa**; Pagefind **266 sayfa** indeksledi.
-- Playwright + axe (`npm run qa`): **54 sayfa/genişlik kombinasyonu, 0 sorun**.
+- Playwright + axe (`npm run qa`): **54 sayfa/genişlik kombinasyonu, 0 sorun** (Vercel production alias üzerinde de doğrulandı).
 - `npm run validate:content`: hata yok, 10 uyarı (4 projede İngilizce eksik, iletişim e-postası boş, iki farklı telefon).
 - Önceki cPanel paketi: `release/fernas-cpanel-2026-10-22.zip` — **26.17 MB**, 129 adet 301. **Yeni tasarım sonrası paket yeniden üretilmeli.**
 - Lighthouse son hâl için henüz çalıştırılmadı.
@@ -43,7 +43,7 @@ Kurumsal sadeleştirme, görsel yenileme ve yayın altyapısı tamamlandı. Site
 ## Önizleme
 
 - Yerel: `http://localhost:4322/` (preview portu değişebilir)
-- Vercel: deployment sonrası eklenecek.
+- Vercel: `https://fernas-web.vercel.app` — GitHub reposuna bağlı, production alias. Formlar `PUBLIC_DEMO_MODE=true` ile demo.
 - Ekran görüntüleri: `screenshots/` (git dışı) ve `docs/reference/`.
 
 ## Bilinen açıklar / yayın öncesi

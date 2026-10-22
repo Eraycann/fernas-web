@@ -33,6 +33,8 @@ git push
 
 ## 3. Vercel önizleme
 
+Canlı adres: <https://fernas-web.vercel.app>
+
 ### Panelden
 
 1. Vercel → **Add New → Project**.
@@ -43,7 +45,7 @@ git push
    - Output Directory: `dist`
    - Install Command: `npm ci`
 4. Environment Variables:
-   - `PUBLIC_DEMO_MODE=true` (isteğe bağlı; `.vercel.app` alan adında formlar zaten demo)
+   - `PUBLIC_DEMO_MODE=true` (Vercel projesinde tanımlı; formları demo moduna alır)
 5. Deploy.
 
 `vercel.json` bu ayarları ve güvenlik başlıklarını içerir:
@@ -65,8 +67,7 @@ vercel --prod
 Vercel PHP çalıştıramaz. `src/lib/demo.ts` şu durumlarda formu demo moduna alır:
 
 - `npm run dev`
-- `PUBLIC_DEMO_MODE=true`
-- alan adı `.vercel.app` ile bitiyorsa
+- `PUBLIC_DEMO_MODE=true` (Vercel projesinde production, preview ve development için tanımlı)
 
 Demo modunda ağ isteği yapılmaz; başarı mesajı gösterilir, e-posta gönderilmez. Gerçek form gönderimi için cPanel gerekir. Vercel'de gerçek form isteniyorsa ayrı bir serverless fonksiyon veya harici form servisi gerekir; bu projenin kapsamı dışındadır.
 
